@@ -1,0 +1,75 @@
+body{
+    background:#f6f5f5;
+    display: grid;
+    grid-template-areas:
+    'player enemy';
+    .half{
+        text-align: center;
+        display: inline;
+        .field_game{
+            padding-left: 8%;
+        }
+        .play_field {
+        }
+        #player_field {
+            background : #276678;
+            box-shadow: 0 0 70px #bcd5e9; 
+            .field{
+                width: 75px;
+                height: 75px;
+                background-color: #d3e0ea;
+
+            }
+            .miss {
+                background-color: #ffefa1;
+            }
+            .ship{
+                background-color: #1687a7 !important;
+                &:hover{
+                    background-color: #214151 !important;
+                }
+            }
+            .crached{
+                background-color: rosybrown;
+            }
+            .ship_border{
+                background-color:#eff7e1;
+            }
+        }
+        #enemy_field {
+            background : #276678;
+            box-shadow: 0 0 70px #bcd5e9; 
+            .field{
+                width: 75px;
+                height: 75px;
+                background-color: #d3e0ea;
+                &:hover {
+                    background-color: #16c79a!important;
+                    box-shadow: 0 0 30px #f1ffda; 
+                }
+            }
+            .miss {
+                background-color: #ffefa1;
+            }
+            .ship{
+                background-color: #1687a7 !important;
+                &:hover{
+                    background-color: #214151 !important;
+                }
+            }
+            .crached{
+                background-color: rosybrown;
+            }
+            .ship_border{
+                background-color:#eff7e1;
+            }
+        }
+        #player{
+            
+            grid-area: player;
+        }
+        #enemy{ 
+            grid-area: enemy;
+        }
+    }
+}
