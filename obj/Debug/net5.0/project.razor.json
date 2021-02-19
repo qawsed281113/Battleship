@@ -15608,6 +15608,11 @@
       "FileKind": "mvc"
     },
     {
+      "FilePath": "/home/david/Projects/Sync/DotNet/Exam/Pages/Game/Index.cshtml",
+      "TargetPath": "Pages\\Game\\Index.cshtml",
+      "FileKind": "mvc"
+    },
+    {
       "FilePath": "/home/david/Projects/Sync/DotNet/Exam/Pages/Shared/_Layout.cshtml",
       "TargetPath": "Pages\\Shared\\_Layout.cshtml",
       "FileKind": "mvc"
@@ -15623,8 +15628,18 @@
       "FileKind": "mvc"
     },
     {
+      "FilePath": "/home/david/Projects/Sync/DotNet/Exam/Pages/Game/Game.cshtml",
+      "TargetPath": "Pages\\Game\\Game.cshtml",
+      "FileKind": "mvc"
+    },
+    {
       "FilePath": "/home/david/Projects/Sync/DotNet/Exam/Pages/Privacy.cshtml",
       "TargetPath": "Pages\\Privacy.cshtml",
+      "FileKind": "mvc"
+    },
+    {
+      "FilePath": "/home/david/Projects/Sync/DotNet/Exam/Pages/Game/NewGame.cshtml",
+      "TargetPath": "Pages\\Game\\NewGame.cshtml",
       "FileKind": "mvc"
     },
     {

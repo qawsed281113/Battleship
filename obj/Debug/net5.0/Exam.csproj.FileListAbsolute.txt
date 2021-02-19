@@ -80,3 +80,6 @@
 /home/david/Projects/Sync/DotNet/Exam/obj/Debug/net5.0/ref/Exam.dll
 /home/david/Projects/Sync/DotNet/Exam/obj/Debug/net5.0/Exam.pdb
 /home/david/Projects/Sync/DotNet/Exam/obj/Debug/net5.0/Exam.genruntimeconfig.cache
+/home/david/Projects/Sync/DotNet/Exam/obj/Debug/net5.0/Razor/Pages/Game/Game.cshtml.g.cs
+/home/david/Projects/Sync/DotNet/Exam/obj/Debug/net5.0/Razor/Pages/Game/Index.cshtml.g.cs
+/home/david/Projects/Sync/DotNet/Exam/obj/Debug/net5.0/Razor/Pages/Game/NewGame.cshtml.g.cs
