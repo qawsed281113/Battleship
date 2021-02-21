@@ -10,7 +10,6 @@ namespace Exam.Data
     {
         [Key]
         public int Id {get; set;}
-        public IdentityUser Owner {get; set;}
         public ICollection<Cell> Cells {get;set;}
     }
 }

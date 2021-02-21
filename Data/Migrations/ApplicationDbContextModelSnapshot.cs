@@ -32,7 +32,7 @@ namespace Exam.Data.Migrations
 
                     b.HasIndex("MapId");
 
-                    b.ToTable("Cell");
+                    b.ToTable("Cells");
                 });
 
             modelBuilder.Entity("Exam.Data.Game", b =>
@@ -60,14 +60,9 @@ namespace Exam.Data.Migrations
                     b.Property<int?>("GameId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("OwnerId")
-                        .HasColumnType("TEXT");
-
                     b.HasKey("Id");
 
                     b.HasIndex("GameId");
-
-                    b.HasIndex("OwnerId");
 
                     b.ToTable("Maps");
                 });
@@ -133,14 +128,15 @@ namespace Exam.Data.Migrations
                         .IsConcurrencyToken()
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("Email")
                         .HasMaxLength(256)
                         .HasColumnType("TEXT");
 
                     b.Property<bool>("EmailConfirmed")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int?>("GameId")
                         .HasColumnType("INTEGER");
 
                     b.Property<bool>("LockoutEnabled")
@@ -178,8 +174,6 @@ namespace Exam.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("GameId");
-
                     b.HasIndex("NormalizedEmail")
                         .HasDatabaseName("EmailIndex");
 
@@ -188,6 +182,8 @@ namespace Exam.Data.Migrations
                         .HasDatabaseName("UserNameIndex");
 
                     b.ToTable("AspNetUsers");
+
+                    b.HasDiscriminator<string>("Discriminator").HasValue("IdentityUser");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
@@ -216,11 +212,9 @@ namespace Exam.Data.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
                     b.Property<string>("LoginProvider")
-                        .HasMaxLength(128)
                         .HasColumnType("TEXT");
 
                     b.Property<string>("ProviderKey")
-                        .HasMaxLength(128)
                         .HasColumnType("TEXT");
 
                     b.Property<string>("ProviderDisplayName")
@@ -258,11 +252,9 @@ namespace Exam.Data.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("LoginProvider")
-                        .HasMaxLength(128)
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Name")
-                        .HasMaxLength(128)
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Value")
@@ -271,6 +263,21 @@ namespace Exam.Data.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens");
+                });
+
+            modelBuilder.Entity("Exam.Data.User", b =>
+                {
+                    b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
+
+                    b.Property<int?>("GameId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("NickName")
+                        .HasColumnType("TEXT");
+
+                    b.HasIndex("GameId");
+
+                    b.HasDiscriminator().HasValue("User");
                 });
 
             modelBuilder.Entity("Exam.Data.Cell", b =>
@@ -282,7 +289,7 @@ namespace Exam.Data.Migrations
 
             modelBuilder.Entity("Exam.Data.Game", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "UserTurn")
+                    b.HasOne("Exam.Data.User", "UserTurn")
                         .WithMany()
                         .HasForeignKey("UserTurnId");
 
@@ -294,12 +301,6 @@ namespace Exam.Data.Migrations
                     b.HasOne("Exam.Data.Game", null)
                         .WithMany("Maps")
                         .HasForeignKey("GameId");
-
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "Owner")
-                        .WithMany()
-                        .HasForeignKey("OwnerId");
-
-                    b.Navigation("Owner");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -309,13 +310,6 @@ namespace Exam.Data.Migrations
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUser", b =>
-                {
-                    b.HasOne("Exam.Data.Game", null)
-                        .WithMany("Users")
-                        .HasForeignKey("GameId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
@@ -358,6 +352,13 @@ namespace Exam.Data.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Exam.Data.User", b =>
+                {
+                    b.HasOne("Exam.Data.Game", null)
+                        .WithMany("Users")
+                        .HasForeignKey("GameId");
                 });
 
             modelBuilder.Entity("Exam.Data.Game", b =>
