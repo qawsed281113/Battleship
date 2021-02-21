@@ -1,7 +1,6 @@
 /home/david/Projects/Sync/DotNet/Exam/bin/Debug/net5.0/appsettings.Development.json
 /home/david/Projects/Sync/DotNet/Exam/bin/Debug/net5.0/appsettings.json
 /home/david/Projects/Sync/DotNet/Exam/bin/Debug/net5.0/Exam.StaticWebAssets.xml
-/home/david/Projects/Sync/DotNet/Exam/bin/Debug/net5.0/app.db
 /home/david/Projects/Sync/DotNet/Exam/bin/Debug/net5.0/Exam
 /home/david/Projects/Sync/DotNet/Exam/bin/Debug/net5.0/Exam.deps.json
 /home/david/Projects/Sync/DotNet/Exam/bin/Debug/net5.0/Exam.runtimeconfig.json
@@ -83,3 +82,8 @@
 /home/david/Projects/Sync/DotNet/Exam/obj/Debug/net5.0/Razor/Pages/Game/Game.cshtml.g.cs
 /home/david/Projects/Sync/DotNet/Exam/obj/Debug/net5.0/Razor/Pages/Game/Index.cshtml.g.cs
 /home/david/Projects/Sync/DotNet/Exam/obj/Debug/net5.0/Razor/Pages/Game/NewGame.cshtml.g.cs
+/home/david/Projects/Sync/DotNet/Exam/bin/Debug/net5.0/Microsoft.OpenApi.dll
+/home/david/Projects/Sync/DotNet/Exam/bin/Debug/net5.0/Swashbuckle.AspNetCore.Swagger.dll
+/home/david/Projects/Sync/DotNet/Exam/bin/Debug/net5.0/Swashbuckle.AspNetCore.SwaggerGen.dll
+/home/david/Projects/Sync/DotNet/Exam/bin/Debug/net5.0/Swashbuckle.AspNetCore.SwaggerUI.dll
+/home/david/Projects/Sync/DotNet/Exam/bin/Debug/net5.0/app.db

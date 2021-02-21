@@ -12,9 +12,5 @@ namespace MyApp.Namespace
         public void OnGet()
         {
         }
-        public async Task<IActionResult> OnGetAsync()
-        {
-            return Page();
-        }
     }
 }

@@ -11,10 +11,10 @@ namespace Exam.API
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class Game : ControllerBase 
+    public class API_Game : ControllerBase 
     {
         private readonly ApplicationDbContext _context;
-        public Game (ApplicationDbContext context)
+        public API_Game (ApplicationDbContext context)
         {
             _context = context;
         }
@@ -24,7 +24,7 @@ namespace Exam.API
             return await _context.Games.ToListAsync();
         }
         [HttpGet("{id}")]
-        public async Task<ActionResult<Exam.Data.Game>> GetSchool(int id)
+        public async Task<ActionResult<Exam.Data.Game>> GetGame(int id)
         {
             var game = await _context.Games.FindAsync(id);
             if (game == null)

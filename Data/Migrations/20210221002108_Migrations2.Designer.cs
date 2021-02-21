@@ -9,14 +9,70 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Exam.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210218143210_Data2")]
-    partial class Data2
+    [Migration("20210221002108_Migrations2")]
+    partial class Migrations2
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "5.0.3");
+
+            modelBuilder.Entity("Exam.Data.Cell", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("CellData")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int?>("MapId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MapId");
+
+                    b.ToTable("Cell");
+                });
+
+            modelBuilder.Entity("Exam.Data.Game", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("UserTurnId")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserTurnId");
+
+                    b.ToTable("Games");
+                });
+
+            modelBuilder.Entity("Exam.Data.Map", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int?>("GameId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("OwnerId")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("GameId");
+
+                    b.HasIndex("OwnerId");
+
+                    b.ToTable("Maps");
+                });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
@@ -86,6 +142,9 @@ namespace Exam.Data.Migrations
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("INTEGER");
 
+                    b.Property<int?>("GameId")
+                        .HasColumnType("INTEGER");
+
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("INTEGER");
 
@@ -120,6 +179,8 @@ namespace Exam.Data.Migrations
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("GameId");
 
                     b.HasIndex("NormalizedEmail")
                         .HasDatabaseName("EmailIndex");
@@ -214,6 +275,35 @@ namespace Exam.Data.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("Exam.Data.Cell", b =>
+                {
+                    b.HasOne("Exam.Data.Map", null)
+                        .WithMany("Cells")
+                        .HasForeignKey("MapId");
+                });
+
+            modelBuilder.Entity("Exam.Data.Game", b =>
+                {
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "UserTurn")
+                        .WithMany()
+                        .HasForeignKey("UserTurnId");
+
+                    b.Navigation("UserTurn");
+                });
+
+            modelBuilder.Entity("Exam.Data.Map", b =>
+                {
+                    b.HasOne("Exam.Data.Game", null)
+                        .WithMany("Maps")
+                        .HasForeignKey("GameId");
+
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "Owner")
+                        .WithMany()
+                        .HasForeignKey("OwnerId");
+
+                    b.Navigation("Owner");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -221,6 +311,13 @@ namespace Exam.Data.Migrations
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUser", b =>
+                {
+                    b.HasOne("Exam.Data.Game", null)
+                        .WithMany("Users")
+                        .HasForeignKey("GameId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
@@ -263,6 +360,18 @@ namespace Exam.Data.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Exam.Data.Game", b =>
+                {
+                    b.Navigation("Maps");
+
+                    b.Navigation("Users");
+                });
+
+            modelBuilder.Entity("Exam.Data.Map", b =>
+                {
+                    b.Navigation("Cells");
                 });
 #pragma warning restore 612, 618
         }
