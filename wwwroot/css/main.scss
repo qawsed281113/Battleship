@@ -2,15 +2,48 @@
     display: grid;
     grid-template-columns: 50% 50%;
 }
+
 .half{
     text-align: center;
     display: inline;
     .field_game{
         padding-left: 8%;
     }
+    .ship_line{
+        margin: 20px;
+    }
+    #map_field , #ships_field{
+        .no_ship{
+            width: 50px;
+            height: 50px;
+            background-color: #2b79b4;
+        }
+        .field{
+            width: 50px;
+            height: 50px;
+            background-color: #d3e0ea;
+
+        }
+        .ship_border{
+            width: 50px;
+            height: 50px;
+            background-color:#eff7e1;
+        }
+        .ship_dont_put{
+            width: 50px;
+            height: 50px;
+            background-color:#eff7e1;
+        }
+        .ship{
+            width: 50px;
+            height: 50px;
+            background-color: #1687a7 !important;
+        }
+    }
     #player_field {
         background : #276678;
         box-shadow: 0 0 70px #bcd5e9; 
+        
         .field{
             width: 50px;
             height: 50px;
@@ -70,4 +103,7 @@
             background-color: #ffefa1;
         }
     }
+}
+#go_to_game{
+    
 }

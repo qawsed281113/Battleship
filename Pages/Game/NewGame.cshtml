@@ -2,3 +2,25 @@
 @model MyApp.Namespace.NewGameModel
 @{
 }
+
+<div class="main_field">
+    <div class="half" id="ships">
+        <h1>Ships</h1>
+        <div class="field_game" id="ships_field">
+        </div>
+    </div>
+
+    <div class="half" id="map">
+        <h1>Map</h1>
+        <div class="field_game">
+            <table class="play_field" id="map_field">
+        
+            </table>
+        </div>
+    </div>
+</div>
+<div id="go_to_game" hidden>
+    Go to the game
+</div>
+
+<script src="/js/newgame.js"></script>

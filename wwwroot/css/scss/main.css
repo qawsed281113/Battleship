@@ -10,6 +10,34 @@
 .half .field_game {
   padding-left: 8%;
 }
+.half .ship_line {
+  margin: 20px;
+}
+.half #map_field .no_ship, .half #ships_field .no_ship {
+  width: 50px;
+  height: 50px;
+  background-color: #2b79b4;
+}
+.half #map_field .field, .half #ships_field .field {
+  width: 50px;
+  height: 50px;
+  background-color: #d3e0ea;
+}
+.half #map_field .ship_border, .half #ships_field .ship_border {
+  width: 50px;
+  height: 50px;
+  background-color: #eff7e1;
+}
+.half #map_field .ship_dont_put, .half #ships_field .ship_dont_put {
+  width: 50px;
+  height: 50px;
+  background-color: #eff7e1;
+}
+.half #map_field .ship, .half #ships_field .ship {
+  width: 50px;
+  height: 50px;
+  background-color: #1687a7 !important;
+}
 .half #player_field {
   background: #276678;
   box-shadow: 0 0 70px #bcd5e9;

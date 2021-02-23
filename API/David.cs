@@ -19,7 +19,8 @@ namespace Exam.API
             _context = context;
         }
         [HttpGet]
-        public async Task<ActionResult<String>> GetData()
+        public async Task<ActionResult<String>> GetData
+        ()
         {
             string data = "data";
             return data;

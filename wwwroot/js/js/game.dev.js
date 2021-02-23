@@ -5,7 +5,7 @@ function createTablePlayer(player_field_id, map) {
     line = document.createElement("tr");
     line.setAttribute("id", 'line-' + y);
     line.setAttribute("class", "line");
-    document.getElementById(player_field_id).appendChild(line);
+    docume4etElementById(player_field_id).appendChild(line);
 
     for (x = 0; x < 10; x++) {
       column = document.createElement("td");

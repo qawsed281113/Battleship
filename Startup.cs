@@ -37,14 +37,22 @@ namespace Exam
             services.AddIdentity<User, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddTokenProvider<DataProtectorTokenProvider<User>>(TokenOptions.DefaultProvider);
-            services.AddRazorPages(options => {
-                options.Conventions.AuthorizeFolder("/Game");
-            });
             services.AddTransient<IEmailSender,EmailSender>();
+            // services.AddRazorPages(options => {
+            //     // options.Conventions.AddAreaPageRoute("Identity", "/Login", "/Account/Login");
+            //     options.Conventions.AuthorizeFolder("/Game");
+            // });
+            services.AddRazorPages();
             services.AddControllers();
             services.AddSwaggerGen( c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo{Title="RazorPage", Version="v1"});
+            });
+            services.ConfigureApplicationCookie(options =>
+            {
+                options.LoginPath = "/Identity/Account/Login";
+                options.LogoutPath = "/Identity/Account/Logout";
+                options.AccessDeniedPath = "/Identity/Account/AccessDenied";
             });
         }
 

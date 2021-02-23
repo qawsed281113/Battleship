@@ -1,4 +1,31 @@
 ﻿@page
 @model Exam.Pages.Game.IndexModel
 @{
+    ViewData["Title"] = "Index";
+    Layout = "~/Pages/Shared/_Layout.cshtml";
 }
+
+<div class="status">
+    <div class="new_game">
+        <a asp-page="/Game/NewGame" >New Game</a>
+    </div>
+</div>
+<div class="games">
+    @if(Model.Games.Count > 1)
+    {
+        <table class="games_list">
+            @foreach (var Game in Model.Games)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => Game.Id)
+                    </td>
+                    <td>
+                        <a asp-page="/Game/Game" asp-route-id="@Game.Id">Visit</a>
+                    </td>
+                </tr>
+            }        
+        </table>
+    }
+            
+</div>
