@@ -267,6 +267,20 @@ document.addEventListener('keydown', (event) => {
             showMap();
             break;
         case Keys.Enter:
+            $.ajax({
+                method: "PUT",
+                url: "/api/API_Game/1",
+                beforeSend: function (xhr) { xhr.setRequestHeader("XSRF-TOKEN", $('input:hidden[name="__RequestVerificationToken"]').val()); },
+                contentType: "application/json;charset=utf-8",
+                data: '{"id":1,"users":[{"id":"string","userName":"string","normalizedUserName":"string","email":"string","normalizedEmail":"string","emailConfirmed":true,"passwordHash":"string","securityStamp":"string","concurrencyStamp":"string","phoneNumber":"string","phoneNumberConfirmed":true,"twoFactorEnabled":true,"lockoutEnd":"2021-02-24T11:00:22.767Z","lockoutEnabled":true,"accessFailedCount":0,"nickName":"string"}],"userTurn":{"id":"string","userName":"string","normalizedUserName":"string","email":"string","normalizedEmail":"string","emailConfirmed":true,"passwordHash":"string","securityStamp":"string","concurrencyStamp":"string","phoneNumber":"string","phoneNumberConfirmed":true,"twoFactorEnabled":true,"lockoutEnd":"2021-02-24T11:00:22.768Z","lockoutEnabled":true,"accessFailedCount":0,"nickName":"string"},"maps":[{"id":0,"cells":[{"id":0,"cellTypes":[{"id":0,"typeName":"string","cells":[null]}]}]}]}',
+                success: function (message) {
+                    alert(JSON.stringify(map));
+                },
+                error: function (message) {
+                    alert("Nifiga ne robit");
+                }
+            });
+            break;
             saveTimeShip();
             clearAllTrash();
             showMap();
@@ -281,21 +295,22 @@ document.addEventListener('keydown', (event) => {
                 let link = document.getElementById('go_to_game');
                 link.removeAttribute('hidden');
                 link.addEventListener('click', function(){
-                    $.ajax({
-                        method: "POST",
-                        url: "/api/API_Game/put/"+ document.getElementById('game_id').innerText,
-                        beforeSend: function (xhr) { xhr.setRequestHeader("XSRF-TOKEN", $('input:hidden[name="__RequestVerificationToken"]').val()); },
-                        contentType: "application/json;charset=utf-8",
-                        data: JSON.stringify(map),
-                        success: function (message) {
-                            alert(JSON.stringify(map));
-                        },
-                        error: function (message) {
-                            alert("Nifiga ne robit");
-                        }
-                    });
+                    // $.ajax({
+                    //     method: "POST",
+                    //     url: "/api/API_Game/put/9",
+                    //     beforeSend: function (xhr) { xhr.setRequestHeader("XSRF-TOKEN", $('input:hidden[name="__RequestVerificationToken"]').val()); },
+                    //     contentType: "application/json;charset=utf-8",
+                    //     data: JSON.stringify('{"id":9,"users":[{"id":"string","userName":"string","normalizedUserName":"string","email":"string","normalizedEmail":"string","emailConfirmed":true,"passwordHash":"string","securityStamp":"string","concurrencyStamp":"string","phoneNumber":"string","phoneNumberConfirmed":true,"twoFactorEnabled":true,"lockoutEnd":"2021-02-24T11:00:22.767Z","lockoutEnabled":true,"accessFailedCount":0,"nickName":"string"}],"userTurn":{"id":"string","userName":"string","normalizedUserName":"string","email":"string","normalizedEmail":"string","emailConfirmed":true,"passwordHash":"string","securityStamp":"string","concurrencyStamp":"string","phoneNumber":"string","phoneNumberConfirmed":true,"twoFactorEnabled":true,"lockoutEnd":"2021-02-24T11:00:22.768Z","lockoutEnabled":true,"accessFailedCount":0,"nickName":"string"},"maps":[{"id":0,"cells":[{"id":0,"cellTypes":[{"id":0,"typeName":"string","cells":[null]}]}]}]}'),
+                    //     success: function (message) {
+                    //         alert(JSON.stringify(map));
+                    //     },
+                    //     error: function (message) {
+                    //         alert("Nifiga ne robit");
+                    //     }
+                    // });
                 });
             }
             break;       
     }
 });
+//document.getElementById('game_id').innerText,

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace Exam.Data
@@ -6,6 +7,6 @@ namespace Exam.Data
     {
         [Key]
         public int Id {get;set;}
-        public string CellData {get;set;}
+        public ICollection<CellType> CellTypes {get;set;}
     }
 }

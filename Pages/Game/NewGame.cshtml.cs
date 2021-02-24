@@ -32,15 +32,28 @@ namespace MyApp.Namespace
             var user  = _context.Users.Find(userId);
             ICollection<Exam.Data.User> users = new List<Exam.Data.User>();
             List<Exam.Data.Map> maps = new List<Exam.Data.Map>();
-            maps.Add(new Exam.Data.Map());
-            maps.Add(new Exam.Data.Map());
+            var sellTypes = new List<Exam.Data.CellType>();
+            sellTypes.Add(new Exam.Data.CellType{
+                TypeName = "ship"
+            });
+            var cells = new List<Exam.Data.Cell>();
+            cells.Add(new Exam.Data.Cell{
+                CellTypes = sellTypes
+            });
+            maps.Add(new Exam.Data.Map{
+                Cells = cells
+            });
+            maps.Add(new Exam.Data.Map{
+            Cells = cells
+            });
+
             users.Add((Exam.Data.User)user);
             var game = new Exam.Data.Game{
                 Users = users,
                 UserTurn = (Exam.Data.User)user,
                 Maps = maps
             };
-            Game =game;
+            Game = game;
             _context.Games.Add(game);
             _context.SaveChanges();
             return Page();

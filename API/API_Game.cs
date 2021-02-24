@@ -34,8 +34,8 @@ namespace Exam.API
 
             return game;
         }
-        [HttpPut("put/{id}")]
-        public async Task<IActionResult> PutGame(int id, Exam.Data.Game game)
+        [HttpPut("{id}")]
+        public async Task<IActionResult> PutGame(int id, [FromBody] Exam.Data.Game game)
         {
             if(id != game.Id)
             {
