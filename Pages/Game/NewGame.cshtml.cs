@@ -24,6 +24,7 @@ namespace MyApp.Namespace
             _signInManager = signInManager;
             __userManager = userManager;
         }
+        [BindProperty]
         public Exam.Data.Game Game {get; set;}
         public async Task<IActionResult> OnGetAsync()
         {
@@ -39,6 +40,7 @@ namespace MyApp.Namespace
                 UserTurn = (Exam.Data.User)user,
                 Maps = maps
             };
+            Game =game;
             _context.Games.Add(game);
             _context.SaveChanges();
             return Page();

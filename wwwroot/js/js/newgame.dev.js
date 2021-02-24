@@ -349,14 +349,14 @@ document.addEventListener('keydown', function (event) {
         link.addEventListener('click', function () {
           $.ajax({
             method: "POST",
-            url: "/api/",
+            url: "/api/API_Game/put/" + document.getElementById('game_id').innerText,
             beforeSend: function beforeSend(xhr) {
               xhr.setRequestHeader("XSRF-TOKEN", $('input:hidden[name="__RequestVerificationToken"]').val());
             },
             contentType: "application/json;charset=utf-8",
-            data: JSON.stringify(obj),
+            data: JSON.stringify(map),
             success: function success(message) {
-              alert(JSON.stringify(obj));
+              alert(JSON.stringify(map));
             },
             error: function error(message) {
               alert("Nifiga ne robit");

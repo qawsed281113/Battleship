@@ -34,7 +34,7 @@ namespace Exam.API
 
             return game;
         }
-        [HttpPut("{id}")]
+        [HttpPut("put/{id}")]
         public async Task<IActionResult> PutGame(int id, Exam.Data.Game game)
         {
             if(id != game.Id)
