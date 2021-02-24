@@ -175,43 +175,6 @@ function setListenersMap() {
               }
 
               break;
-
-            case ShipWay.left:
-              if (copy_map[_y][_x - (selectedShip - 1)] != null) {
-                var _fixed_x = _x;
-
-                for (var _i2 = _x; _i2 > _fixed_x - selectedShip; _i2--) {
-                  copy_map[_y][_i2] = copy_map.time_sheap;
-                }
-              }
-
-              break;
-
-            case ShipWay.down:
-              if (copy_map[_y + selectedShip - 1][_x] != null) {
-                var fixed_y = _y;
-
-                for (var _i3 = _y; _i3 < selectedShip + fixed_y; _i3++) {
-                  copy_map[_i3][_x] = copy_map.time_sheap;
-                }
-              }
-
-              break;
-
-            case ShipWay.up:
-              m = copy_map[_y - (selectedShip - 1)];
-
-              if (m != null) {
-                var _fixed_y = _y;
-
-                if (_fixed_y >= selectedShip - 1) {
-                  for (var _i4 = _y; _i4 > _fixed_y - selectedShip; _i4--) {
-                    copy_map[_i4][_x] = copy_map.time_sheap;
-                  }
-                }
-              }
-
-              break;
           }
 
           map = copy_map;
@@ -223,10 +186,10 @@ function setListenersMap() {
 }
 
 function initMap() {
-  map = [];
+  map = {};
 
   for (var y = 0; y < 10; y++) {
-    map[y] = [];
+    map[y] = {};
 
     for (var x = 0; x < 10; x++) {
       map[y][x] = Map.field;
@@ -331,22 +294,6 @@ document.addEventListener('keydown', function (event) {
       break;
 
     case Keys.Enter:
-      $.ajax({
-        method: "PUT",
-        url: "/api/API_Game/1",
-        beforeSend: function beforeSend(xhr) {
-          xhr.setRequestHeader("XSRF-TOKEN", $('input:hidden[name="__RequestVerificationToken"]').val());
-        },
-        contentType: "application/json;charset=utf-8",
-        data: '{"id":1,"users":[{"id":"string","userName":"string","normalizedUserName":"string","email":"string","normalizedEmail":"string","emailConfirmed":true,"passwordHash":"string","securityStamp":"string","concurrencyStamp":"string","phoneNumber":"string","phoneNumberConfirmed":true,"twoFactorEnabled":true,"lockoutEnd":"2021-02-24T11:00:22.767Z","lockoutEnabled":true,"accessFailedCount":0,"nickName":"string"}],"userTurn":{"id":"string","userName":"string","normalizedUserName":"string","email":"string","normalizedEmail":"string","emailConfirmed":true,"passwordHash":"string","securityStamp":"string","concurrencyStamp":"string","phoneNumber":"string","phoneNumberConfirmed":true,"twoFactorEnabled":true,"lockoutEnd":"2021-02-24T11:00:22.768Z","lockoutEnabled":true,"accessFailedCount":0,"nickName":"string"},"maps":[{"id":0,"cells":[{"id":0,"cellTypes":[{"id":0,"typeName":"string","cells":[null]}]}]}]}',
-        success: function success(message) {
-          alert(JSON.stringify(map));
-        },
-        error: function error(message) {
-          alert("Nifiga ne robit");
-        }
-      });
-      break;
       saveTimeShip();
       clearAllTrash();
       showMap();
@@ -355,26 +302,69 @@ document.addEventListener('keydown', function (event) {
       selectedShip = null;
       var goToGame = true;
 
-      for (var _i5 = 1; _i5 < 5; _i5++) {
-        goToGame = ships[_i5] == 0 && goToGame;
+      for (var _i2 = 1; _i2 < 5; _i2++) {
+        goToGame = ships[_i2] == 0 && goToGame;
       }
+      /**
+       * {
+              "id": 0,
+              "cells": [
+                  {
+                  "id": 0,
+                  "cellTypes": [
+                      {
+                      "id": 0,
+                      "typeName": "string",
+                      "cells": [
+                          null
+                      ]
+                      }
+                  ]
+                  }
+              ]       
+          }
+       */
 
-      if (goToGame) {
+
+      if (!goToGame) {
         var link = document.getElementById('go_to_game');
         link.removeAttribute('hidden');
-        link.addEventListener('click', function () {// $.ajax({
-          //     method: "POST",
-          //     url: "/api/API_Game/put/9",
-          //     beforeSend: function (xhr) { xhr.setRequestHeader("XSRF-TOKEN", $('input:hidden[name="__RequestVerificationToken"]').val()); },
-          //     contentType: "application/json;charset=utf-8",
-          //     data: JSON.stringify('{"id":9,"users":[{"id":"string","userName":"string","normalizedUserName":"string","email":"string","normalizedEmail":"string","emailConfirmed":true,"passwordHash":"string","securityStamp":"string","concurrencyStamp":"string","phoneNumber":"string","phoneNumberConfirmed":true,"twoFactorEnabled":true,"lockoutEnd":"2021-02-24T11:00:22.767Z","lockoutEnabled":true,"accessFailedCount":0,"nickName":"string"}],"userTurn":{"id":"string","userName":"string","normalizedUserName":"string","email":"string","normalizedEmail":"string","emailConfirmed":true,"passwordHash":"string","securityStamp":"string","concurrencyStamp":"string","phoneNumber":"string","phoneNumberConfirmed":true,"twoFactorEnabled":true,"lockoutEnd":"2021-02-24T11:00:22.768Z","lockoutEnabled":true,"accessFailedCount":0,"nickName":"string"},"maps":[{"id":0,"cells":[{"id":0,"cellTypes":[{"id":0,"typeName":"string","cells":[null]}]}]}]}'),
-          //     success: function (message) {
-          //         alert(JSON.stringify(map));
-          //     },
-          //     error: function (message) {
-          //         alert("Nifiga ne robit");
-          //     }
-          // });
+        link.addEventListener('click', function () {
+          id = document.getElementById('game_id').innerText;
+          link_text = '/api/API_Game/' + id;
+          var all_data = {};
+          all_data['id'] = Number(id);
+          all_data['users'] = [];
+          all_data['userTurn'] = {};
+          all_data['maps'] = [];
+          var maps = {};
+          maps['cells'] = [];
+
+          for (var _i3 = 0; _i3 < 10; ++_i3) {
+            for (var j = 0; j < 10; ++j) {
+              maps['cells'][_i3 + j] = {};
+              maps['cells'][_i3 + j]['cellTypes'] = [];
+              maps['cells'][_i3 + j]['cellTypes']['typeName'] = map[_i3][j];
+            }
+          }
+
+          all_data['maps'][0] = maps;
+          console.log(JSON.stringify(all_data));
+          $.ajax({
+            method: "PUT",
+            url: link_text,
+            beforeSend: function beforeSend(xhr) {
+              xhr.setRequestHeader("XSRF-TOKEN", $('input:hidden[name="__RequestVerificationToken"]').val());
+            },
+            contentType: "application/json;charset=utf-8",
+            data: JSON.stringify(all_data),
+            success: function success(message) {
+              alert(JSON.stringify(map));
+            },
+            error: function error(message) {
+              alert("Nifiga ne robit");
+            }
+          });
         });
       }
 

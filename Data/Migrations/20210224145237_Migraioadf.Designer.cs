@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Exam.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210221173819_Migrations2")]
-    partial class Migrations2
+    [Migration("20210224145237_Migraioadf")]
+    partial class Migraioadf
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -18,16 +18,31 @@ namespace Exam.Data.Migrations
             modelBuilder
                 .HasAnnotation("ProductVersion", "5.0.3");
 
+            modelBuilder.Entity("CellCellType", b =>
+                {
+                    b.Property<int>("CellTypesId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("CellsId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("CellTypesId", "CellsId");
+
+                    b.HasIndex("CellsId");
+
+                    b.ToTable("CellCellType");
+                });
+
             modelBuilder.Entity("Exam.Data.Cell", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("CellData")
-                        .HasColumnType("TEXT");
-
                     b.Property<int?>("MapId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("cellNum")
                         .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
@@ -35,6 +50,20 @@ namespace Exam.Data.Migrations
                     b.HasIndex("MapId");
 
                     b.ToTable("Cells");
+                });
+
+            modelBuilder.Entity("Exam.Data.CellType", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("TypeName")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("CellTypes");
                 });
 
             modelBuilder.Entity("Exam.Data.Game", b =>
@@ -280,6 +309,21 @@ namespace Exam.Data.Migrations
                     b.HasIndex("GameId");
 
                     b.HasDiscriminator().HasValue("User");
+                });
+
+            modelBuilder.Entity("CellCellType", b =>
+                {
+                    b.HasOne("Exam.Data.CellType", null)
+                        .WithMany()
+                        .HasForeignKey("CellTypesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Exam.Data.Cell", null)
+                        .WithMany()
+                        .HasForeignKey("CellsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Exam.Data.Cell", b =>

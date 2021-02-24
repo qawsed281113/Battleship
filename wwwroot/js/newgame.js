@@ -145,33 +145,6 @@ function setListenersMap(){
                                 }
                             }
                             break;
-                        case ShipWay.left:
-                            if(copy_map[y][x - (selectedShip - 1)] != null){
-                                let fixed_x = x;
-                                for(let i = x; i > fixed_x - selectedShip; i--){
-                                    copy_map[y][i] = copy_map.time_sheap;
-                                }
-                            }
-                            break;
-                        case ShipWay.down:
-                            if((copy_map[y + (selectedShip) - 1][x] != null)){
-                                let fixed_y =  y;
-                                for(let i = y; i < (selectedShip + fixed_y); i++){
-                                    copy_map[i][x] = copy_map.time_sheap;
-                                }
-                            }
-                            break;
-                        case ShipWay.up:
-                            m = copy_map[y - (selectedShip - 1)];
-                            if((m!= null)){
-                                let fixed_y =  y;
-                                if(fixed_y >= selectedShip - 1){
-                                    for(let i = y; i >  fixed_y - selectedShip; i--){
-                                        copy_map[i][x] = copy_map.time_sheap;
-                                    }
-                                }
-                            }
-                            break;
                     }
                     map = copy_map;
                     showMap();
@@ -181,9 +154,9 @@ function setListenersMap(){
     }
 }
 function initMap(){
-    map = [];
+    map = {};
     for(let y = 0; y < 10;y++){
-        map[y] = [];
+        map[y] = {};
         for(let x = 0; x < 10;x++){
             map[y][x]  = Map.field;
         }
@@ -267,20 +240,6 @@ document.addEventListener('keydown', (event) => {
             showMap();
             break;
         case Keys.Enter:
-            $.ajax({
-                method: "PUT",
-                url: "/api/API_Game/1",
-                beforeSend: function (xhr) { xhr.setRequestHeader("XSRF-TOKEN", $('input:hidden[name="__RequestVerificationToken"]').val()); },
-                contentType: "application/json;charset=utf-8",
-                data: '{"id":1,"users":[{"id":"string","userName":"string","normalizedUserName":"string","email":"string","normalizedEmail":"string","emailConfirmed":true,"passwordHash":"string","securityStamp":"string","concurrencyStamp":"string","phoneNumber":"string","phoneNumberConfirmed":true,"twoFactorEnabled":true,"lockoutEnd":"2021-02-24T11:00:22.767Z","lockoutEnabled":true,"accessFailedCount":0,"nickName":"string"}],"userTurn":{"id":"string","userName":"string","normalizedUserName":"string","email":"string","normalizedEmail":"string","emailConfirmed":true,"passwordHash":"string","securityStamp":"string","concurrencyStamp":"string","phoneNumber":"string","phoneNumberConfirmed":true,"twoFactorEnabled":true,"lockoutEnd":"2021-02-24T11:00:22.768Z","lockoutEnabled":true,"accessFailedCount":0,"nickName":"string"},"maps":[{"id":0,"cells":[{"id":0,"cellTypes":[{"id":0,"typeName":"string","cells":[null]}]}]}]}',
-                success: function (message) {
-                    alert(JSON.stringify(map));
-                },
-                error: function (message) {
-                    alert("Nifiga ne robit");
-                }
-            });
-            break;
             saveTimeShip();
             clearAllTrash();
             showMap();
@@ -290,24 +249,61 @@ document.addEventListener('keydown', (event) => {
             let goToGame = true;
             for(let i = 1; i < 5; i++){
                 goToGame = (ships[i] == 0) && goToGame;
-            }
-            if(goToGame){
+            } 
+            /**
+             * {
+                    "id": 0,
+                    "cells": [
+                        {
+                        "id": 0,
+                        "cellTypes": [
+                            {
+                            "id": 0,
+                            "typeName": "string",
+                            "cells": [
+                                null
+                            ]
+                            }
+                        ]
+                        }
+                    ]       
+                }
+             */
+            if(!goToGame){
                 let link = document.getElementById('go_to_game');
                 link.removeAttribute('hidden');
                 link.addEventListener('click', function(){
-                    // $.ajax({
-                    //     method: "POST",
-                    //     url: "/api/API_Game/put/9",
-                    //     beforeSend: function (xhr) { xhr.setRequestHeader("XSRF-TOKEN", $('input:hidden[name="__RequestVerificationToken"]').val()); },
-                    //     contentType: "application/json;charset=utf-8",
-                    //     data: JSON.stringify('{"id":9,"users":[{"id":"string","userName":"string","normalizedUserName":"string","email":"string","normalizedEmail":"string","emailConfirmed":true,"passwordHash":"string","securityStamp":"string","concurrencyStamp":"string","phoneNumber":"string","phoneNumberConfirmed":true,"twoFactorEnabled":true,"lockoutEnd":"2021-02-24T11:00:22.767Z","lockoutEnabled":true,"accessFailedCount":0,"nickName":"string"}],"userTurn":{"id":"string","userName":"string","normalizedUserName":"string","email":"string","normalizedEmail":"string","emailConfirmed":true,"passwordHash":"string","securityStamp":"string","concurrencyStamp":"string","phoneNumber":"string","phoneNumberConfirmed":true,"twoFactorEnabled":true,"lockoutEnd":"2021-02-24T11:00:22.768Z","lockoutEnabled":true,"accessFailedCount":0,"nickName":"string"},"maps":[{"id":0,"cells":[{"id":0,"cellTypes":[{"id":0,"typeName":"string","cells":[null]}]}]}]}'),
-                    //     success: function (message) {
-                    //         alert(JSON.stringify(map));
-                    //     },
-                    //     error: function (message) {
-                    //         alert("Nifiga ne robit");
-                    //     }
-                    // });
+                    id = document.getElementById('game_id').innerText;
+                    link_text = '/api/API_Game/' + id;
+                    var all_data = {}
+                    all_data['id'] = Number(id);
+                    all_data['users'] = [];
+                    all_data['userTurn'] = {};
+                    all_data['maps'] = [];
+                    var maps = {};
+                    maps['cells'] = [];
+                    for(let i =0; i < 10;++i){
+                        for(let j = 0; j < 10 ; ++j){
+                            maps['cells'][i+j] = {};
+                            maps['cells'][i+j]['cellTypes'] = [];
+                            maps['cells'][i+j]['cellTypes']['typeName'] = map[i][j];
+                        }
+                    }
+                    all_data['maps'][0] = maps;
+                    console.log(JSON.stringify(all_data));
+                    $.ajax({
+                        method: "PUT",
+                        url: link_text,
+                        beforeSend: function (xhr) { xhr.setRequestHeader("XSRF-TOKEN", $('input:hidden[name="__RequestVerificationToken"]').val()); },
+                        contentType: "application/json;charset=utf-8",
+                        data: JSON.stringify(all_data),
+                        success: function (message) {
+                            alert(JSON.stringify(map));
+                        },
+                        error: function (message) {
+                            alert("Nifiga ne robit");
+                        }
+                    });
                 });
             }
             break;       

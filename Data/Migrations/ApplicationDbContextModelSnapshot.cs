@@ -40,6 +40,9 @@ namespace Exam.Data.Migrations
                     b.Property<int?>("MapId")
                         .HasColumnType("INTEGER");
 
+                    b.Property<int>("cellNum")
+                        .HasColumnType("INTEGER");
+
                     b.HasKey("Id");
 
                     b.HasIndex("MapId");
@@ -58,7 +61,7 @@ namespace Exam.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("CellType");
+                    b.ToTable("CellTypes");
                 });
 
             modelBuilder.Entity("Exam.Data.Game", b =>

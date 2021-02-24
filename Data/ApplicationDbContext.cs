@@ -11,6 +11,7 @@ namespace Exam.Data
         public DbSet<Game> Games { get; set; }
         public DbSet<Map> Maps {get; set;}
         public DbSet<Cell> Cells {get; set;} 
+        public DbSet<CellType> CellTypes {get;set;}
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
