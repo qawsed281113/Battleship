@@ -14,6 +14,7 @@ namespace Exam.Data
         public ICollection<User> Users {get; set;}
         public User UserTurn {get; set;}
         public List<Map> Maps { get; set; }
+        public GameStatus GameStatus{get;set;}
 
     }
 }

@@ -15623,6 +15623,11 @@
       "FileKind": "mvc"
     },
     {
+      "FilePath": "/home/david/Projects/Sync/DotNet/Exam/Pages/Game/CreateMap.cshtml",
+      "TargetPath": "Pages\\Game\\CreateMap.cshtml",
+      "FileKind": "mvc"
+    },
+    {
       "FilePath": "/home/david/Projects/Sync/DotNet/Exam/Areas/Identity/Pages/Account/Manage/_ManageNav.cshtml",
       "TargetPath": "Areas\\Identity\\Pages\\Account\\Manage\\_ManageNav.cshtml",
       "FileKind": "mvc"

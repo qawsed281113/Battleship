@@ -1,11 +1,11 @@
 "use strict";
 
-function createTablePlayer(player_field_id, map) {
+function createTablePlayerOne(player_field_id, map) {
   for (y = 0; y < 10; y++) {
     line = document.createElement("tr");
     line.setAttribute("id", 'line-' + y);
     line.setAttribute("class", "line");
-    docume4etElementById(player_field_id).appendChild(line);
+    document.getElementById(player_field_id).appendChild(line);
 
     for (x = 0; x < 10; x++) {
       column = document.createElement("td");
@@ -34,7 +34,7 @@ function createTablePlayer(player_field_id, map) {
   }
 }
 
-function createEnemyTable(table_id, map, shoot) {
+function createTablePlayerTwo(table_id, map, shoot) {
   myNode = document.getElementById(table_id);
 
   while (myNode.lastElementChild) {
@@ -82,7 +82,28 @@ function createEnemyTable(table_id, map, shoot) {
   }
 }
 
-map = [['crashed', '', '', '', 'ship', '', '', '', '', ''], ['ship', '', '', '', '', '', '', '', '', ''], ['ship', '', '', '', 'ship', '', '', '', '', ''], ['', '', '', '', 'ship', '', '', 'miss', '', ''], ['s', '', '', '', 'ship', '', '', 'ship', '', ''], ['ship', '', '', '', '', '', '', '', '', ''], ['ship', '', '', '', '', '', '', '', '', ''], ['ship', '', '', '', 'ship', '', '', '', '', ''], ['ship', '', '', '', 'ship', '', '', '', '', ''], ['ship', '', '', '', 'ship', '', '', '', '', ''], ['ship', '', '', '', 'ship', '', '', '', '', '']];
+function getPlayerMap() {
+  $.ajax({
+    method: "GET",
+    url: link_text,
+    beforeSend: function beforeSend(xhr) {
+      xhr.setRequestHeader("XSRF-TOKEN", $('input:hidden[name="__RequestVerificationToken"]').val());
+    },
+    contentType: 'application/json;charset=utf-8',
+    succes: function succes(param) {
+      alert('succes');
+    },
+    error: function error(massage) {
+      alert('vse sdochlo');
+    }
+  });
+}
+
+function getEnemyMap() {}
+
+function main() {}
+
+var map = {};
 createTablePlayer('player_field', map, false);
 turn = document.getElementById('turn'); // turn.innerText = 'Player';
 

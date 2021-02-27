@@ -224,4 +224,5 @@
 /home/david/Projects/Sync/DotNet/Exam/obj/Debug/net5.0/Razor/Areas/Identity/Pages/_ValidationScriptsPartial.cshtml.g.cs
 /home/david/Projects/Sync/DotNet/Exam/obj/Debug/net5.0/Razor/Areas/Identity/Pages/_ViewImports.cshtml.g.cs
 /home/david/Projects/Sync/DotNet/Exam/obj/Debug/net5.0/Razor/Areas/Identity/Pages/_ViewStart.cshtml.g.cs
+/home/david/Projects/Sync/DotNet/Exam/obj/Debug/net5.0/Razor/Pages/Game/CreateMap.cshtml.g.cs
 /home/david/Projects/Sync/DotNet/Exam/bin/Debug/net5.0/app.db

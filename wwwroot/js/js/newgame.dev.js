@@ -65,6 +65,7 @@ function showMap() {
   }
 
   setListenersMap();
+  sessionStorage.setItem('map', JSON.stringify(map));
 }
 
 function clearAllTrash() {
@@ -186,14 +187,20 @@ function setListenersMap() {
 }
 
 function initMap() {
-  map = {};
+  var new_ = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
 
-  for (var y = 0; y < 10; y++) {
-    map[y] = {};
+  if (new_ || sessionStorage.getItem('map') == null) {
+    map = {};
 
-    for (var x = 0; x < 10; x++) {
-      map[y][x] = Map.field;
+    for (var y = 0; y < 10; y++) {
+      map[y] = {};
+
+      for (var x = 0; x < 10; x++) {
+        map[y][x] = Map.field;
+      }
     }
+  } else {
+    map = JSON.parse(sessionStorage.getItem('map'));
   }
 }
 
@@ -237,6 +244,7 @@ function showShips() {
   }
 
   setListenersShips();
+  sessionStorage.setItem('ships', JSON.stringify(ships));
 }
 
 function setListenersShips() {
@@ -254,10 +262,16 @@ function setListenersShips() {
 }
 
 function initShips() {
-  ships[4] = 1;
-  ships[3] = 2;
-  ships[2] = 3;
-  ships[1] = 4;
+  var new_ = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
+
+  if (new_ || sessionStorage.getItem('ships') == null) {
+    ships[4] = 1;
+    ships[3] = 2;
+    ships[2] = 3;
+    ships[1] = 4;
+  } else {
+    ships = JSON.parse(sessionStorage.getItem('ships'));
+  }
 }
 
 var selectedShip = null;
@@ -326,11 +340,11 @@ document.addEventListener('keydown', function (event) {
        */
 
 
-      if (!goToGame) {
+      if (goToGame) {
         var link = document.getElementById('go_to_game');
         link.removeAttribute('hidden');
         link.addEventListener('click', function () {
-          id = document.getElementById('game_id').innerText;
+          var id = document.getElementById('game_id').innerText;
           link_text = '/api/API_Game/' + id;
           var all_data = {};
           all_data['id'] = Number(id);
@@ -359,10 +373,10 @@ document.addEventListener('keydown', function (event) {
             contentType: "application/json;charset=utf-8",
             data: JSON.stringify(all_data),
             success: function success(message) {
-              alert(JSON.stringify(map));
+              window.location.replace('/Game/Game?id=' + id);
             },
             error: function error(message) {
-              alert("Nifiga ne robit");
+              alert('vse sdochlo');
             }
           });
         });

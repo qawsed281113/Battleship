@@ -11,5 +11,6 @@ namespace Exam.Data
         [Key]
         public int Id {get; set;}
         public ICollection<Cell> Cells {get;set;}
+        public User Owner {get;set;}
     }
 }
