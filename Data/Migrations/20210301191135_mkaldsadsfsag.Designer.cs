@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Exam.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210224134142_Migrations")]
-    partial class Migrations
+    [Migration("20210301191135_mkaldsadsfsag")]
+    partial class mkaldsadsfsag
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -42,6 +42,9 @@ namespace Exam.Data.Migrations
                     b.Property<int?>("MapId")
                         .HasColumnType("INTEGER");
 
+                    b.Property<int>("cellNum")
+                        .HasColumnType("INTEGER");
+
                     b.HasKey("Id");
 
                     b.HasIndex("MapId");
@@ -69,14 +72,48 @@ namespace Exam.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<int?>("GameStatusid")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("UserTurnId")
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserTurnId");
+                    b.HasIndex("GameStatusid");
 
                     b.ToTable("Games");
+                });
+
+            modelBuilder.Entity("Exam.Data.GameStatus", b =>
+                {
+                    b.Property<int>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("id");
+
+                    b.ToTable("GameStatuses");
+
+                    b.HasData(
+                        new
+                        {
+                            id = 1,
+                            Name = "playing"
+                        },
+                        new
+                        {
+                            id = 2,
+                            Name = "over"
+                        },
+                        new
+                        {
+                            id = 3,
+                            Name = "alone"
+                        });
                 });
 
             modelBuilder.Entity("Exam.Data.Map", b =>
@@ -88,9 +125,14 @@ namespace Exam.Data.Migrations
                     b.Property<int?>("GameId")
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("OwnerId")
+                        .HasColumnType("TEXT");
+
                     b.HasKey("Id");
 
                     b.HasIndex("GameId");
+
+                    b.HasIndex("OwnerId");
 
                     b.ToTable("Maps");
                 });
@@ -332,11 +374,11 @@ namespace Exam.Data.Migrations
 
             modelBuilder.Entity("Exam.Data.Game", b =>
                 {
-                    b.HasOne("Exam.Data.User", "UserTurn")
+                    b.HasOne("Exam.Data.GameStatus", "GameStatus")
                         .WithMany()
-                        .HasForeignKey("UserTurnId");
+                        .HasForeignKey("GameStatusid");
 
-                    b.Navigation("UserTurn");
+                    b.Navigation("GameStatus");
                 });
 
             modelBuilder.Entity("Exam.Data.Map", b =>
@@ -344,6 +386,12 @@ namespace Exam.Data.Migrations
                     b.HasOne("Exam.Data.Game", null)
                         .WithMany("Maps")
                         .HasForeignKey("GameId");
+
+                    b.HasOne("Exam.Data.User", "Owner")
+                        .WithMany()
+                        .HasForeignKey("OwnerId");
+
+                    b.Navigation("Owner");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -399,9 +447,11 @@ namespace Exam.Data.Migrations
 
             modelBuilder.Entity("Exam.Data.User", b =>
                 {
-                    b.HasOne("Exam.Data.Game", null)
+                    b.HasOne("Exam.Data.Game", "Game")
                         .WithMany("Users")
                         .HasForeignKey("GameId");
+
+                    b.Navigation("Game");
                 });
 
             modelBuilder.Entity("Exam.Data.Game", b =>

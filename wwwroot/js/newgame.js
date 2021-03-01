@@ -282,6 +282,7 @@ document.addEventListener('keydown', (event) => {
             if(goToGame){
                 let link = document.getElementById('go_to_game');
                 link.removeAttribute('hidden');
+                sessionStorage.clear();
                 link.addEventListener('click', function(){
                     var id = document.getElementById('game_id').innerText;
                     link_text = '/api/API_Game/' + id;

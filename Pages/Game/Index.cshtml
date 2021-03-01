@@ -15,15 +15,13 @@
     </div>
 </div>
 <div class="games">
-    @if(Model.Games.Count > 1)
+    @if(Model.Games.Count >= 1)
     {
         <table class="games_list">
             @foreach (var Game in Model.Games)
             {
                 <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => Game.Id)
-                    </td>
+                   
                     <td>
                         @* <a asp-page="/Game/CreateMap" asp-route-id="@Game.Id" >Visit</a> *@
                         <form method="post">

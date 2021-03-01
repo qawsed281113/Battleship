@@ -31,13 +31,25 @@ namespace Exam.Pages.Game
         public Exam.Data.Game Game {get; set;}
         public async Task<IActionResult> OnGetAsync()
         {
-            Games = await _context.Games.ToListAsync();
+            var alone = await _context.GameStatuses.FindAsync(3);
+            Games = await _context.Games.Where(u => u.GameStatus == alone).ToListAsync();
             return Page();
         }
         public async Task<IActionResult> OnPostAsync()
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var user  = _context.Users.Find(userId);
+            var user_find  = _context.Users.Include(u => u.Game).Where(u => u.Id == userId);
+            var user = user_find.FirstOrDefault();
+            try
+            {
+                var game_delete = await _context.Games.FindAsync(user.Game.Id);
+                var status_stop = await _context.GameStatuses.FindAsync(2);
+                game_delete.GameStatus = status_stop;
+            }
+            catch
+            {
+                
+            }
             List<Exam.Data.User> users = new List<Exam.Data.User>();
             List<Exam.Data.Map> maps = new List<Exam.Data.Map>();
             var sellTypes = new List<Exam.Data.CellType>();
@@ -52,13 +64,14 @@ namespace Exam.Pages.Game
                 Cells = cells
             });
             maps.Add(new Exam.Data.Map{
-            Cells = cells
+                Cells = cells
             });
 
             users.Add((Exam.Data.User)user);
             var game = new Exam.Data.Game{
                 Users = users,
-                UserTurn = (Exam.Data.User)user,
+                GameStatus = _context.GameStatuses.Find(3),
+                UserTurnId = user.Id,
                 Maps = maps
             };
             Game = game;
@@ -70,8 +83,8 @@ namespace Exam.Pages.Game
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var user  = _context.Users.Find(userId);
-            var game = _context.Games.Include(g => g.Users).Include(g => g.UserTurn).Where(g => g.Id == Game.Id);
-            var Game2 = await game.FirstOrDefaultAsync();
+            var game = _context.Games.Include(g => g.Users).Where(g => g.Id == Game.Id);
+            var Game2 = game.FirstOrDefault();
             var user2 = Game2.Users.FirstOrDefault();
             if(user.Id == user2.Id)
             {

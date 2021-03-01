@@ -8,6 +8,6 @@ namespace Exam.Data
         [Key]
         public int Id {get;set;}
         public int cellNum {get;set;}
-        public ICollection<CellType> CellTypes {get;set;}
+        public List<CellType> CellTypes {get;set;}
     }
 }

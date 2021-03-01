@@ -10,12 +10,35 @@ namespace Exam.Data
     {
         public DbSet<Game> Games { get; set; }
         public DbSet<Map> Maps {get; set;}
+        public DbSet<User> Users {get;set;} 
+        public DbSet<GameStatus> GameStatuses {get;set;}
         public DbSet<Cell> Cells {get; set;} 
         public DbSet<CellType> CellTypes {get;set;}
+        // public DbSet<User> Users {get;set;}
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
-
+        }
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<GameStatus>(d =>
+                d.HasData(new GameStatus[]{
+                    new GameStatus{
+                        id = 1,
+                        Name = "playing"
+                    },
+                    new GameStatus{
+                        id = 2,
+                        Name = "over"
+                    },
+                    new GameStatus{
+                        id = 3,
+                        Name = "alone"
+                    }
+                })    
+            );
+                
         }
     }
 }

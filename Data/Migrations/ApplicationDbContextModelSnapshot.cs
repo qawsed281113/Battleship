@@ -80,8 +80,6 @@ namespace Exam.Data.Migrations
 
                     b.HasIndex("GameStatusid");
 
-                    b.HasIndex("UserTurnId");
-
                     b.ToTable("Games");
                 });
 
@@ -91,9 +89,29 @@ namespace Exam.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("Name")
+                        .HasColumnType("TEXT");
+
                     b.HasKey("id");
 
-                    b.ToTable("GameStatus");
+                    b.ToTable("GameStatuses");
+
+                    b.HasData(
+                        new
+                        {
+                            id = 1,
+                            Name = "playing"
+                        },
+                        new
+                        {
+                            id = 2,
+                            Name = "over"
+                        },
+                        new
+                        {
+                            id = 3,
+                            Name = "alone"
+                        });
                 });
 
             modelBuilder.Entity("Exam.Data.Map", b =>
@@ -355,16 +373,10 @@ namespace Exam.Data.Migrations
             modelBuilder.Entity("Exam.Data.Game", b =>
                 {
                     b.HasOne("Exam.Data.GameStatus", "GameStatus")
-                        .WithMany("Games")
+                        .WithMany()
                         .HasForeignKey("GameStatusid");
 
-                    b.HasOne("Exam.Data.User", "UserTurn")
-                        .WithMany()
-                        .HasForeignKey("UserTurnId");
-
                     b.Navigation("GameStatus");
-
-                    b.Navigation("UserTurn");
                 });
 
             modelBuilder.Entity("Exam.Data.Map", b =>
@@ -433,9 +445,11 @@ namespace Exam.Data.Migrations
 
             modelBuilder.Entity("Exam.Data.User", b =>
                 {
-                    b.HasOne("Exam.Data.Game", null)
+                    b.HasOne("Exam.Data.Game", "Game")
                         .WithMany("Users")
                         .HasForeignKey("GameId");
+
+                    b.Navigation("Game");
                 });
 
             modelBuilder.Entity("Exam.Data.Game", b =>
@@ -443,11 +457,6 @@ namespace Exam.Data.Migrations
                     b.Navigation("Maps");
 
                     b.Navigation("Users");
-                });
-
-            modelBuilder.Entity("Exam.Data.GameStatus", b =>
-                {
-                    b.Navigation("Games");
                 });
 
             modelBuilder.Entity("Exam.Data.Map", b =>

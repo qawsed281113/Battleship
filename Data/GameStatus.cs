@@ -7,6 +7,7 @@ namespace Exam.Data
     {
         [Key]
         public int id {get;set;}
-        public ICollection<Game> Games {get;set;}
+        // public ICollection<Game> Games {get;set;}
+        public string Name {get;set;}
     }
 }
