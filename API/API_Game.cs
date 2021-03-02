@@ -42,7 +42,6 @@ namespace Exam.API
                 return BadRequest();
             }
             _context.Entry(game).State = EntityState.Modified;
-            var game_db = _context.Games.FindAsync(game.Id).Result;
             try
             {
                 await _context.SaveChangesAsync();

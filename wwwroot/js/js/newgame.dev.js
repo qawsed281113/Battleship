@@ -109,13 +109,14 @@ function setListenersMap() {
 
           switch (shipsWay) {
             case ShipWay.right:
-              if (copy_map[_y][_x + (selectedShip - 1)] != null && copy_map[_y][_x + selectedShip] != ship) {
+              if (copy_map[_y][_x + (selectedShip - 1)] != null) {
                 var fixed_x = _x;
 
                 for (var _i = _x; _i < selectedShip + fixed_x; _i++) {
                   if (copy_map[_y][_i] != Map.ship) {
                     copy_map[_y][_i] = Map.time_sheap;
                   } else {
+                    copy_map = map;
                     return;
                   }
 
@@ -123,18 +124,21 @@ function setListenersMap() {
                     if (copy_map[_y + 1][_i] != Map.ship) {
                       copy_map[_y + 1][_i] = Map.time_ship_border;
                     } else {
+                      copy_map = map;
                       return;
                     }
 
                     if (copy_map[_y + 1][fixed_x - 1] != Map.ship) {
                       copy_map[_y + 1][fixed_x - 1] = Map.time_ship_border;
                     } else {
+                      copy_map = map;
                       return;
                     }
 
                     if (copy_map[_y + 1][_i + 1] != Map.ship) {
                       copy_map[_y + 1][_i + 1] = Map.time_ship_border;
                     } else {
+                      copy_map = map;
                       return;
                     }
                   }
@@ -143,18 +147,21 @@ function setListenersMap() {
                     if (copy_map[_y - 1][_i] != Map.ship) {
                       copy_map[_y - 1][_i] = Map.time_ship_border;
                     } else {
+                      copy_map = map;
                       return;
                     }
 
                     if (copy_map[_y - 1][fixed_x - 1] != Map.ship) {
                       copy_map[_y - 1][fixed_x - 1] = Map.time_ship_border;
                     } else {
+                      copy_map = map;
                       return;
                     }
 
                     if (copy_map[_y - 1][_i + 1] != Map.ship) {
                       copy_map[_y - 1][_i + 1] = Map.time_ship_border;
                     } else {
+                      copy_map = map;
                       return;
                     }
                   }
@@ -162,16 +169,16 @@ function setListenersMap() {
                   if (copy_map[_y][_i + 1] != Map.ship) {
                     copy_map[_y][_i + 1] = Map.time_ship_border;
                   } else {
+                    copy_map = map;
                     return;
                   }
 
                   if (copy_map[_y][fixed_x - 1] != Map.ship) {
                     copy_map[_y][fixed_x - 1] = Map.time_ship_border;
                   } else {
+                    copy_map = map;
                     return;
                   }
-
-                  map = copy_map;
                 }
               }
 
@@ -353,17 +360,7 @@ document.addEventListener('keydown', function (event) {
           all_data['userTurn'] = {};
           all_data['maps'] = [];
           var maps = {};
-          maps['cells'] = [];
-
-          for (var _i3 = 0, line = 0; _i3 < 10; ++_i3, line += 10) {
-            for (var j = 0; j < 10; ++j) {
-              maps['cells'][line + j] = {};
-              maps['cells'][line + j]['cellTypes'] = [];
-              maps['cells'][line + j]['cellTypes'][0] = {};
-              maps['cells'][line + j]['cellTypes'][0]['TypeName'] = map[_i3][j];
-            }
-          }
-
+          maps['Map_str'] = JSON.stringify(map);
           all_data['maps'][0] = maps;
           console.log(JSON.stringify(all_data));
           $.ajax({
