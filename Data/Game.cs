@@ -16,5 +16,9 @@ namespace Exam.Data
         public List<Map> Maps { get; set; }
         public GameStatus GameStatus{get;set;}
 
+        public static implicit operator ValueTask<object>(Game v)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

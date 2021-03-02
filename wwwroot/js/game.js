@@ -1,112 +1,110 @@
-function createTablePlayerOne(player_field_id, map) {
+const Map = {
+    'field' :  'field',
+    'ship' :   'ship',
+    'crush' : 'crush',
+    'miss' : "miss",
+    'ship_hover' : 'ship_hover',
+    'fire' : 'fire',
+};
+function showMap(mapId){
     for(y = 0; y < 10; y++){
-        line = document.createElement("tr");
-        line.setAttribute("id",'line-' + y);
-        line.setAttribute("class","line");
-        document.getElementById(player_field_id).appendChild(line);
-        for(x =0; x < 10; x++){
-            column = document.createElement("td");
-            column.setAttribute("id",'column-' + x + '-' + y);
-            column.setAttribute("class","field");
-            column.setAttribute("type","enemy");
-            if(map[y][x] == 'ship_border'){
-                column.setAttribute("class", "ship_border");
-            }
-            if(map[y][x] == 'ship'){
-                column.setAttribute("class","ship");                
-            }
-            if(map[y][x] == 'crashed'){
-                column.setAttribute("class","crashed");
-            }
-            if(map[y][x] == 'miss'){
-                column.setAttribute("class","miss");
-            }
+        let line = document.createElement("tr");
+        line.setAttribute("id", 'line-' + y);
+        document.getElementById(mapId).appendChild(line);
+        for(x = 0; x < 10; x++){
+            let column = document.createElement("td");
+            column.setAttribute("id", 'column-' + x + '-' + y);
+            column.setAttribute("class", map[y][x]);
+            column.setAttribute("x", x);
+            column.setAttribute("y", y);
             line.appendChild(column);
-        } 
+        }
     }
 }
-function createTablePlayerTwo(table_id, map, shoot){
-    myNode = document.getElementById(table_id);
-    while (myNode.lastElementChild) {
-        myNode.removeChild(myNode.lastElementChild);
-      }
+function setListenerOnMap(mapId){
     for(y = 0; y < 10; y++){
-        line = document.createElement("tr");
-        line.setAttribute("id",'line-' + y);
-        line.setAttribute("class","line");
-        document.getElementById(table_id).appendChild(line);
-        for(x =0; x < 10; x++){
-            column = document.createElement("td");
-            column.setAttribute("id",'column-' + x + '-' + y);
-            column.setAttribute("type","enemy");
-            column.setAttribute("x",x);
-            column.setAttribute("y",y);
-            if(map[y][x] == 'crashed'){
-                column.setAttribute("class","crashed");
-            }
-            if(map[y][x] == 'miss'){
-                column.setAttribute("class","miss");
-            }
-            if(shoot){
-                column.setAttribute("class","field");
-                column.addEventListener("click", function(){
-                    type = this.getAttribute("type");
-                    if(type == "enemy") {
-                        x = this.getAttribute("x");
-                        y = this.getAttribute("y");
-                        this.setAttribute('class', 'crashed');
-                    }
-                });
-            } else {
-                column.setAttribute('class', 'no_shoot_field');
-            }
-            line.appendChild(column);
-        } 
+        for (x = 0; x < 10; x++) {
+            let cell = document.getElementById('column-' + x + '-' + y);
+            cell.addEventListener('hover', function(){
+                if(this.getAttribute("class") == Map.field){
+                    this.setAttribute("class", Map.ship_hover);
+                }
+            });
+            cell.addEventListener("click", function(){
+                x = Number(this.getAttribute("x"));
+                y = Number(this.getAttribute("y"));
+                map[y][x] = Map.fire;
+            },false);
+        }
     }
 }
-function getPlayerMap(){
+function initMap(){
+
+}
+function setMap(playerTurn){
     $.ajax({
         method: "GET",
-        url: link_text,
+        url: "/api/API_Game/" + gameId + "/",
         beforeSend: function (xhr) { xhr.setRequestHeader("XSRF-TOKEN", $('input:hidden[name="__RequestVerificationToken"]').val()); },
         contentType: 'application/json;charset=utf-8',
-        succes: function (param) {
-            alert('succes');
+        succes: function (mapp) {
+            if(playerTurn == userOneName){
+                mapUserOne = mapp; 
+            } else {
+                mapUserTwo = mapp;
+            }
         },
         error: function (massage) {
             alert('vse sdochlo');
         }
     });
 }
-
-function getEnemyMap(){
+function showUserName(userName){
 
 }
-function main() {
-    
-}
-let map = {};
-createTablePlayer('player_field', map,false);
-turn = document.getElementById('turn');
-// turn.innerText = 'Player';
-setInterval(function(){ 
-    turn = document.getElementById('turn');
-    if (turn.innerText == 'Player'){
+function getUserName(){
 
-    } else {
-        map_enemy = [
-            ['crashed','','','','','','','','',''],
-            ['','','','','','','','','',''],
-            ['','','','','','','','','',''],
-            ['','','','','','','','miss','',''],
-            ['','','','','','','','','',''],
-            ['','','','','','','','','',''],
-            ['','','','','','','','','',''],
-            ['','','','','','','','','',''],
-            ['','','','','','','','','',''],
-            ['','','','','','','','','',''],
-            ['','','','','','','','','',''],
-        ];
-        createEnemyTable('enemy_field', map_enemy,true);
+}
+function getGameId(){
+    let queryString = window.location.search;  
+    let urlparams = new URLSearchParams(queryString);
+    gameId = urlparams.get("id");
+}
+function getGame(){
+    $.ajax({
+        method: 'GET',
+        url: "/api/API_Game/" + gameId,
+        beforeSend: function (xhr) { xhr.setRequestHeader("XSRF-TOKEN", $('input:hidden[name="__RequestVerificationToken"]').val()); },
+        contentType: 'application/json;charset=utf-8',
+        success: function(game_return){
+            sessionStorage.setItem("game", JSON.stringify(game_return));
+        },
+        error: function (){
+            alert("vse sdochlo");
+        }
+    });
+}
+function getTurn(){
+    getGameId();
+    getGame();
+    game = JSON.parse(sessionStorage.getItem("game"));
+    console.log(game);
+    if(game != null){
+        playerTurn = game["userTurnId"];
     }
- }, 3000);
+}
+function main(){
+    if(gameId != null){
+    } else {
+        getGameId();
+    }
+}
+var game = null;
+var gameId = null;
+var mapUserOne = {};
+var mapUserTwo = {};
+var userOneName = "";
+var userTwoName = "";
+var playerTurn = '';
+// setInterval(main, 1500);
+getTurn();

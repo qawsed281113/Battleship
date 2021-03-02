@@ -10,7 +10,7 @@ namespace Exam.Data
     {
         [Key]
         public int Id {get; set;}
-        public List<Cell> Cells {get;set;}
+        public string Map_str {get;set;}
         public User Owner {get;set;}
     }
 }

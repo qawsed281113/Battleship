@@ -19,6 +19,8 @@ namespace Exam.Pages.Game
         private readonly UserManager<Exam.Data.User> __userManager;
         [BindProperty]
         public Exam.Data.Game Game {get; set;}
+        [BindProperty]
+        public Exam.Data.User Player {get; set;}
 
         public GameModel(ApplicationDbContext context, SignInManager<User> signInManager, UserManager<User> userManager)
         {
@@ -28,7 +30,10 @@ namespace Exam.Pages.Game
         }
         public async Task<IActionResult> OnGetAsync(int id)
         {
-            var p =  _context.Games.Include(i => i.Users).Where(i => i.Id == 2);
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var user_find  = _context.Users.Include(u => u.Game).Where(u => u.Id == userId);
+            Player = user_find.FirstOrDefault();
+            var p =  _context.Games.Include(i => i.Users).Where(i => i.Id == id);
             Game = await p.FirstOrDefaultAsync();
             return Page();
         }

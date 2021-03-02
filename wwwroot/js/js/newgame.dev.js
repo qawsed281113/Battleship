@@ -340,7 +340,7 @@ document.addEventListener('keydown', function (event) {
        */
 
 
-      if (goToGame) {
+      if (!goToGame) {
         var link = document.getElementById('go_to_game');
         link.removeAttribute('hidden');
         sessionStorage.clear();
@@ -355,11 +355,12 @@ document.addEventListener('keydown', function (event) {
           var maps = {};
           maps['cells'] = [];
 
-          for (var _i3 = 0; _i3 < 10; ++_i3) {
+          for (var _i3 = 0, line = 0; _i3 < 10; ++_i3, line += 10) {
             for (var j = 0; j < 10; ++j) {
-              maps['cells'][_i3 + j] = {};
-              maps['cells'][_i3 + j]['cellTypes'] = [];
-              maps['cells'][_i3 + j]['cellTypes']['typeName'] = map[_i3][j];
+              maps['cells'][line + j] = {};
+              maps['cells'][line + j]['cellTypes'] = [];
+              maps['cells'][line + j]['cellTypes'][0] = {};
+              maps['cells'][line + j]['cellTypes'][0]['TypeName'] = map[_i3][j];
             }
           }
 

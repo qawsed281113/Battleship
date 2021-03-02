@@ -40,39 +40,13 @@ namespace Exam.Pages.Game
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var user_find  = _context.Users.Include(u => u.Game).Where(u => u.Id == userId);
             var user = user_find.FirstOrDefault();
-            try
-            {
-                var game_delete = await _context.Games.FindAsync(user.Game.Id);
-                var status_stop = await _context.GameStatuses.FindAsync(2);
-                game_delete.GameStatus = status_stop;
-            }
-            catch
-            {
-                
-            }
+            this.disableGame();
             List<Exam.Data.User> users = new List<Exam.Data.User>();
-            List<Exam.Data.Map> maps = new List<Exam.Data.Map>();
-            var sellTypes = new List<Exam.Data.CellType>();
-            sellTypes.Add(new Exam.Data.CellType{
-                TypeName = "ship"
-            });
-            var cells = new List<Exam.Data.Cell>();
-            cells.Add(new Exam.Data.Cell{
-                CellTypes = sellTypes
-            });
-            maps.Add(new Exam.Data.Map{
-                Cells = cells
-            });
-            maps.Add(new Exam.Data.Map{
-                Cells = cells
-            });
-
             users.Add((Exam.Data.User)user);
             var game = new Exam.Data.Game{
                 Users = users,
                 GameStatus = _context.GameStatuses.Find(3),
                 UserTurnId = user.Id,
-                Maps = maps
             };
             Game = game;
             _context.Games.Add(game);
@@ -91,6 +65,22 @@ namespace Exam.Pages.Game
                 return NotFound();
             }
             return Redirect("/Game/CreateMap?id="+Game.Id);
+        }
+        private  async void disableGame()
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var user_find  = _context.Users.Include(u => u.Game).Where(u => u.Id == userId);
+            var user = user_find.FirstOrDefault();
+            try
+            {
+                var game_delete = await _context.Games.FindAsync(user.Game.Id);
+                var status_stop = await _context.GameStatuses.FindAsync(2);
+                game_delete.GameStatus = status_stop;
+            }
+            catch
+            {
+                
+            }
         }
     }
 }

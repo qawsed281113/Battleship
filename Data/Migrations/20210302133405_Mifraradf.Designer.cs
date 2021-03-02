@@ -3,18 +3,90 @@ using System;
 using Exam.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Exam.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210302133405_Mifraradf")]
+    partial class Mifraradf
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "5.0.3");
+
+            modelBuilder.Entity("CellCellType", b =>
+                {
+                    b.Property<int>("CellTypesId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("CellsId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("CellTypesId", "CellsId");
+
+                    b.HasIndex("CellsId");
+
+                    b.ToTable("CellCellType");
+                });
+
+            modelBuilder.Entity("Exam.Data.Cell", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int?>("MapId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("cellNum")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MapId");
+
+                    b.ToTable("Cells");
+                });
+
+            modelBuilder.Entity("Exam.Data.CellType", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("TypeName")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("CellTypes");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            TypeName = "ship"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            TypeName = "field"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            TypeName = "miss"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            TypeName = "crashed"
+                        });
+                });
 
             modelBuilder.Entity("Exam.Data.Game", b =>
                 {
@@ -74,9 +146,6 @@ namespace Exam.Data.Migrations
 
                     b.Property<int?>("GameId")
                         .HasColumnType("INTEGER");
-
-                    b.Property<string>("Map_str")
-                        .HasColumnType("TEXT");
 
                     b.Property<string>("OwnerId")
                         .HasColumnType("TEXT");
@@ -303,6 +372,28 @@ namespace Exam.Data.Migrations
                     b.HasDiscriminator().HasValue("User");
                 });
 
+            modelBuilder.Entity("CellCellType", b =>
+                {
+                    b.HasOne("Exam.Data.CellType", null)
+                        .WithMany()
+                        .HasForeignKey("CellTypesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Exam.Data.Cell", null)
+                        .WithMany()
+                        .HasForeignKey("CellsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Exam.Data.Cell", b =>
+                {
+                    b.HasOne("Exam.Data.Map", null)
+                        .WithMany("Cells")
+                        .HasForeignKey("MapId");
+                });
+
             modelBuilder.Entity("Exam.Data.Game", b =>
                 {
                     b.HasOne("Exam.Data.GameStatus", "GameStatus")
@@ -390,6 +481,11 @@ namespace Exam.Data.Migrations
                     b.Navigation("Maps");
 
                     b.Navigation("Users");
+                });
+
+            modelBuilder.Entity("Exam.Data.Map", b =>
+                {
+                    b.Navigation("Cells");
                 });
 #pragma warning restore 612, 618
         }

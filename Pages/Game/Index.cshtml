@@ -21,9 +21,7 @@
             @foreach (var Game in Model.Games)
             {
                 <tr>
-                   
                     <td>
-                        @* <a asp-page="/Game/CreateMap" asp-route-id="@Game.Id" >Visit</a> *@
                         <form method="post">
                                 <input type="hidden" value="@Game.Id" asp-for="Game.Id" />
                                 <input type="submit" value="Visit" asp-page-handler="Visit" />
