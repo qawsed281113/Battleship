@@ -36,7 +36,12 @@
 .half #map_field .ship, .half #ships_field .ship {
   width: 50px;
   height: 50px;
-  background-color: #1687a7 !important;
+  background-color: #1687a7;
+}
+.half #ships_field .ship {
+  width: 50px;
+  height: 50px;
+  background-color: #1687a7;
 }
 .half #player_field {
   background: #276678;

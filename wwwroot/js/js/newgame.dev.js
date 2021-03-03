@@ -141,10 +141,10 @@ function setListenersMap() {
               }
 
               if (copy_map[_y]) {
-                save = copy_map[_y][_x + 1] != Map.ship && save;
+                save = copy_map[_y][_x + selectedShip] != Map.ship && save;
 
-                if (copy_map[_y][_x + 1] != Map.ship) {
-                  copy_map[_y][_x + 1] = Map.time_ship_border;
+                if (copy_map[_y][_x + selectedShip] != Map.ship) {
+                  copy_map[_y][_x + selectedShip] = Map.time_ship_border;
                 } else {
                   return;
                 }
@@ -160,8 +160,58 @@ function setListenersMap() {
 
               break;
 
-            case (ShipWay.down, ShipWay.up):
-              break;
+            case ShipWay.down:
+              var fixed_y = _y;
+
+              for (var _i3 = _y; _i3 < fixed_y + selectedShip && save; ++_i3) {
+                save = fixed_y + selectedShip - 1 < 10;
+
+                if (save) {
+                  save = copy_map[_i3][_x] == Map.field && save;
+
+                  if (copy_map[_i3][_x] == Map.field) {
+                    copy_map[_i3][_x] = Map.time_sheap;
+                  } else {
+                    return;
+                  }
+                } else {
+                  return;
+                }
+              }
+
+              for (var _j = 0; _j < 2; _j++) {
+                for (var _i4 = _y - 1; _i4 < fixed_y + selectedShip + 1; ++_i4) {
+                  // save = copy_map[y + y_array[j]] != Map.ship && save;
+                  if (copy_map[_y][_x + y_array[_j]]) {
+                    save = copy_map[_i4][_x + y_array[_j]] != Map.ship && save;
+
+                    if (copy_map[_i4][_x + y_array[_j]] != Map.ship) {
+                      copy_map[_i4][_x + y_array[_j]] = Map.time_ship_border;
+                    } else {
+                      return;
+                    }
+                  }
+                }
+              }
+
+              if (copy_map[_y]) {
+                save = copy_map[_y + selectedShip][_x] != Map.ship && save;
+
+                if (copy_map[_y + selectedShip][_x] != Map.ship) {
+                  copy_map[_y + selectedShip][_x] = Map.time_ship_border;
+                } else {
+                  return;
+                }
+
+                save = copy_map[_y - 1][_x] != Map.ship && save;
+
+                if (copy_map[_y - 1][_x] != Map.ship) {
+                  copy_map[_y - 1][_x] = Map.time_ship_border;
+                } else {
+                  return;
+                }
+              }
+
           }
 
           if (save) {
@@ -265,6 +315,8 @@ function initMap() {
         map[y][x] = Map.field;
       }
     }
+
+    sessionStorage.setItem('map', JSON.stringify(map));
   } else {
     map = JSON.parse(sessionStorage.getItem('map'));
   }
@@ -320,10 +372,13 @@ function setListenersShips() {
     size = ship[x].getAttribute('size');
     var quanity = ships[size];
     shipsWay = ShipWay.right;
-    if (quanity > 0) ship[x].addEventListener('click', function () {
-      selectedShip = this.getAttribute("size");
-      showMap();
-    });
+
+    if (quanity > 0) {
+      ship[x].addEventListener('click', function () {
+        selectedShip = this.getAttribute("size");
+        showMap();
+      });
+    }
   }
 }
 
@@ -335,6 +390,7 @@ function initShips() {
     ships[3] = 2;
     ships[2] = 3;
     ships[1] = 4;
+    sessionStorage.setItem('ships', JSON.stringify(ships));
   } else {
     ships = JSON.parse(sessionStorage.getItem('ships'));
   }
@@ -349,6 +405,12 @@ initShips();
 initMap();
 showMap();
 showShips();
+document.getElementById('clear_map').addEventListener('click', function () {
+  initMap(true);
+  initShips(true);
+  showMap();
+  showShips();
+});
 document.addEventListener('keydown', function (event) {
   var keyName = event.key;
   console.log(keyName);
@@ -360,12 +422,12 @@ document.addEventListener('keydown', function (event) {
       break;
 
     case Keys.ArrowLeft:
-      shipsWay = ShipWay.left;
+      shipsWay = ShipWay.right;
       showMap();
       break;
 
     case Keys.ArrowUp:
-      shipsWay = ShipWay.up;
+      shipsWay = ShipWay.down;
       showMap();
       break;
 
@@ -384,8 +446,8 @@ document.addEventListener('keydown', function (event) {
         selectedShip = null;
         var goToGame = true;
 
-        for (var _i3 = 1; _i3 < 5; _i3++) {
-          goToGame = ships[_i3] == 0 && goToGame;
+        for (var _i5 = 1; _i5 < 5; _i5++) {
+          goToGame = ships[_i5] == 0 && goToGame;
         }
 
         if (goToGame) {

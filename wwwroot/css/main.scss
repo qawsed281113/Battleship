@@ -37,7 +37,14 @@
         .ship{
             width: 50px;
             height: 50px;
-            background-color: #1687a7 !important;
+            background-color: #1687a7;
+        }
+    }
+    #ships_field {
+        .ship{
+            width: 50px;
+            height: 50px;
+            background-color: #1687a7;
         }
     }
     #player_field {

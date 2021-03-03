@@ -113,18 +113,48 @@ function setListenersMap(){
                                 }
                             }
                             if(copy_map[y]){
-                                save = copy_map[y][x + 1] != Map.ship && save;
-                                if(copy_map[y][x + 1] != Map.ship){
-                                    copy_map[y][x + 1] = Map.time_ship_border;
+                                save = copy_map[y][x + selectedShip ] != Map.ship && save;
+                                if(copy_map[y][x + selectedShip] != Map.ship){
+                                    copy_map[y][x + selectedShip] = Map.time_ship_border;
                                 }else{return}
                                 save = copy_map[y][x - 1] != Map.ship && save;
-                                if(copy_map[y][x -1] != Map.ship){
+                                if(copy_map[y][x - 1] != Map.ship){
                                     copy_map[y][x - 1] = Map.time_ship_border;
                                 }else{return}
                             }
                             break;
-                        case ShipWay.down, ShipWay.up:
-                            break;
+                            case ShipWay.down:
+                                let fixed_y  =  y;
+                                for(let i = y;(i < fixed_y + selectedShip) && save ;++i){
+                                    save = fixed_y + selectedShip - 1 < 10;
+                                    if(save){
+                                        save = copy_map[i][x] == Map.field && save;
+                                        if(copy_map[i][x] == Map.field){
+                                            copy_map[i][x] = Map.time_sheap;
+                                        } else{return;}
+                                    } else{return}
+                                }
+                                for(let j = 0; j < 2; j++){
+                                    for(let i = y - 1; i < fixed_y + selectedShip + 1;++i){
+                                        // save = copy_map[y + y_array[j]] != Map.ship && save;
+                                        if(copy_map[y][x + y_array[j]]){
+                                            save = copy_map[i][x + y_array[j]] != Map.ship && save;
+                                            if(copy_map[i][x + y_array[j]] != Map.ship){
+                                                copy_map[i][x + y_array[j]] = Map.time_ship_border;
+                                            }else{return;}
+                                        }
+                                    }
+                                }
+                                if(copy_map[y]){
+                                    save = copy_map[y + selectedShip][x] != Map.ship && save;
+                                    if(copy_map[y + selectedShip][x] != Map.ship){
+                                        copy_map[y + selectedShip][x] = Map.time_ship_border;
+                                    }else{return}
+                                    save = copy_map[y - 1][x] != Map.ship && save;
+                                    if(copy_map[y - 1][x] != Map.ship){
+                                        copy_map[y - 1][x] = Map.time_ship_border;
+                                    }else{return}
+                                }
                     }
                     if(save){
                         map = copy_map;
@@ -222,6 +252,7 @@ function initMap(new_ = false){
                 map[y][x]  = Map.field;
             }
         }
+        sessionStorage.setItem('map', JSON.stringify(map));
     } else{
         map = JSON.parse(sessionStorage.getItem('map'));
     }
@@ -262,11 +293,12 @@ function setListenersShips(){
         size = ship[x].getAttribute('size');
         let quanity = ships[size];
         shipsWay = ShipWay.right;
-        if(quanity > 0)
+        if(quanity > 0){
             ship[x].addEventListener('click',function(){
                 selectedShip = this.getAttribute("size");
                 showMap();
             })
+        }
     }
 }
 function initShips(new_ = false){
@@ -275,6 +307,7 @@ function initShips(new_ = false){
         ships[3] = 2;
         ships[2] = 3;
         ships[1] = 4;
+        sessionStorage.setItem('ships', JSON.stringify(ships));
     } else {
         ships = JSON.parse(sessionStorage.getItem('ships'));
     }
@@ -289,6 +322,14 @@ initMap();
 showMap();
 showShips();
 
+
+
+document.getElementById('clear_map').addEventListener('click', function (){
+    initMap(true);
+    initShips(true);
+    showMap();
+    showShips();
+})
 document.addEventListener('keydown', (event) => {
     let keyName = event.key;
     console.log(keyName);
@@ -298,11 +339,11 @@ document.addEventListener('keydown', (event) => {
             showMap();
             break;
         case Keys.ArrowLeft:
-            shipsWay = ShipWay.left;
+            shipsWay = ShipWay.right;
             showMap();
             break;
         case Keys.ArrowUp:
-            shipsWay = ShipWay.up;
+            shipsWay = ShipWay.down;
             showMap();
             break;
         case Keys.ArrowDown:
