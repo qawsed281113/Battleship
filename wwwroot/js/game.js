@@ -107,4 +107,7 @@ var userOneName = "";
 var userTwoName = "";
 var playerTurn = '';
 // setInterval(main, 1500);
-getTurn();
+getGameId();
+getGame();
+game = JSON.parse(sessionStorage.getItem("game"));
+console.log(game);

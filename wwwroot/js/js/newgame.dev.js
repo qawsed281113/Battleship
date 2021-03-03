@@ -413,7 +413,6 @@ document.getElementById('clear_map').addEventListener('click', function () {
 });
 document.addEventListener('keydown', function (event) {
   var keyName = event.key;
-  console.log(keyName);
 
   switch (keyName) {
     case Keys.ArrowRight:
@@ -450,7 +449,7 @@ document.addEventListener('keydown', function (event) {
           goToGame = ships[_i5] == 0 && goToGame;
         }
 
-        if (goToGame) {
+        if (!goToGame) {
           var link = document.getElementById('go_to_game');
           link.removeAttribute('hidden');
           sessionStorage.clear();

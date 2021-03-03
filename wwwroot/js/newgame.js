@@ -332,7 +332,6 @@ document.getElementById('clear_map').addEventListener('click', function (){
 })
 document.addEventListener('keydown', (event) => {
     let keyName = event.key;
-    console.log(keyName);
     switch(keyName){
         case Keys.ArrowRight:
             shipsWay = ShipWay.right;
@@ -362,7 +361,7 @@ document.addEventListener('keydown', (event) => {
                 for(let i = 1; i < 5; i++){
                     goToGame = (ships[i] == 0) && goToGame;
                 } 
-                if(goToGame){
+                if(!goToGame){
                     let link = document.getElementById('go_to_game');
                     link.removeAttribute('hidden');
                     sessionStorage.clear();

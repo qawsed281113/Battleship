@@ -26,7 +26,7 @@ namespace Exam.API
         [HttpGet("{id}")]
         public async Task<ActionResult<Exam.Data.Game>> GetGame(int id)
         {
-            var game = await _context.Games.FindAsync(id);
+            var game = await _context.Games.Include(m => m.Maps).Where(u => u.Id == id).FirstAsync();
             if (game == null)
             {
                 return NotFound();
