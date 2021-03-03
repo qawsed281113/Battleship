@@ -80,84 +80,135 @@ function setListenersMap(){
             cell.addEventListener('mouseover', function(){
                 clearAllTrash();
                 let copy_map = map;
-                if((selectedShip != null)&& (shipsWay != null)){
-                    let x = this.getAttribute("x");
-                    x = Number(x);
-                    let y = this.getAttribute("y");
-                    y = Number(y);
-                    let change = false;
+                if((selectedShip != null) && (shipsWay != null)){
+                    let x = Number(this.getAttribute("x"));
+                    let y = Number(this.getAttribute("y"));
                     selectedShip = Number(selectedShip);
+                    let y_array = [
+                         -1, 1
+                    ];
+                    save = true;
+                    // showMap();
                     switch(shipsWay){
                         case ShipWay.right:
-                            if((copy_map[y][x + (selectedShip - 1)] != null)){
-                                let fixed_x =  x;
-                                for(let i = x; i < selectedShip + fixed_x; i++){
-                                    if(copy_map[y][i]!= Map.ship){
+                            let fixed_x  =  x;
+                            for(let i = x;(i < fixed_x + selectedShip) && save ;++i){
+                                save = fixed_x + selectedShip - 1 < 10;
+                                if(save){
+                                    save = copy_map[y][i] == Map.field && save;
+                                    if(copy_map[y][i] == Map.field){
                                         copy_map[y][i] = Map.time_sheap;
-                                    }else{ 
-                                        copy_map = map;
-                                        return;
-                                    }
-                                    if(copy_map[y + 1]){
-                                        if(copy_map[y + 1][i] != Map.ship){
-                                            copy_map[y + 1][i] = Map.time_ship_border;
-                                        }else{ 
-                                            copy_map = map;
-                                        return;
-                                        }	
-                                        if(copy_map[y  + 1][fixed_x - 1] != Map.ship){
-                                            copy_map[y + 1][fixed_x - 1] = Map.time_ship_border;
-                                        }else{ 
-                                            copy_map = map;
-                                        return;
-                                        }
-                                        if(copy_map[y + 1][i + 1] != Map.ship){
-                                            copy_map[y + 1][i + 1] = Map.time_ship_border;
-                                        }else{ 
-                                            copy_map = map;
-                                            return;
-                                        }
-                                    }
-                                    if(copy_map[y - 1]){
-                                        if(copy_map[y - 1][i] != Map.ship){
-                                            copy_map[y - 1][i] = Map.time_ship_border;
-                                        }else{ 
-                                            copy_map = map;
-                                            return;
-                                        }
-                                        
-                                        if(copy_map[y - 1][fixed_x - 1] != Map.ship){
-                                            copy_map[y - 1][fixed_x - 1] = Map.time_ship_border;
-                                        }else{ 
-                                            copy_map = map;
-                                            return;
-                                        }
-                                        if(copy_map[y - 1][i + 1] != Map.ship){
-                                            copy_map[y - 1][i + 1] = Map.time_ship_border;
-                                        }else{ 
-                                            copy_map = map;
-                                            return;
-                                        }
-                                    }
-                                    if(copy_map[y][i + 1] != Map.ship){
-                                        copy_map[y][i + 1] = Map.time_ship_border;
-                                    }else{ 
-                                        copy_map = map;
-                                        return;
-                                    }
-                                    if(copy_map[y][fixed_x - 1] != Map.ship){
-                                        copy_map[y][fixed_x - 1] = Map.time_ship_border;
-                                    }else{ 
-                                            copy_map = map;
-                                            return;
+                                    } else{return;}
+                                } else{return}
+                            }
+                            for(let j = 0; j < 2; j++){
+                                for(let i = x - 1; i < fixed_x + selectedShip + 1;++i){
+                                    // save = copy_map[y + y_array[j]] != Map.ship && save;
+                                    if(copy_map[y + y_array[j]]){
+                                        save = copy_map[y + y_array[j]][i] != Map.ship && save;
+                                        if(copy_map[y + y_array[j]][i] != Map.ship){
+                                            copy_map[y + y_array[j]][i] = Map.time_ship_border;
+                                        }else{return;}
                                     }
                                 }
                             }
+                            if(copy_map[y]){
+                                save = copy_map[y][x + 1] != Map.ship && save;
+                                if(copy_map[y][x + 1] != Map.ship){
+                                    copy_map[y][x + 1] = Map.time_ship_border;
+                                }else{return}
+                                save = copy_map[y][x - 1] != Map.ship && save;
+                                if(copy_map[y][x -1] != Map.ship){
+                                    copy_map[y][x - 1] = Map.time_ship_border;
+                                }else{return}
+                            }
+                            break;
+                        case ShipWay.down, ShipWay.up:
                             break;
                     }
-                    map = copy_map;
-                    showMap();
+                    if(save){
+                        map = copy_map;
+                        showMap();
+                    }
                 }
+                // if((selectedShip != null)&& (shipsWay != null)){
+                //     let x = this.getAttribute("x");
+                //     x = Number(x);
+                //     let y = this.getAttribute("y");
+                //     y = Number(y);
+                //     let change = false;
+                //     selectedShip = Number(selectedShip);
+                //     switch(shipsWay){
+                //         case ShipWay.right:
+                //             if((copy_map[y][x + (selectedShip - 1)] != null)){
+                //                 let fixed_x =  x;
+                //                 for(let i = x; i < selectedShip + fixed_x; i++){
+                //                     if(copy_map[y][i]!= Map.ship){
+                //                         copy_map[y][i] = Map.time_sheap;
+                //                     }else{ 
+                //                         copy_map = map;
+                //                         return;
+                //                     }
+                //                     if(copy_map[y + 1]){
+                //                         if(copy_map[y + 1][i] != Map.ship){
+                //                             copy_map[y + 1][i] = Map.time_ship_border;
+                //                         }else{ 
+                //                             copy_map = map;
+                //                         return;
+                //                         }	
+                //                         if(copy_map[y  + 1][fixed_x - 1] != Map.ship){
+                //                             copy_map[y + 1][fixed_x - 1] = Map.time_ship_border;
+                //                         }else{ 
+                //                             copy_map = map;
+                //                         return;
+                //                         }
+                //                         if(copy_map[y + 1][i + 1] != Map.ship){
+                //                             copy_map[y + 1][i + 1] = Map.time_ship_border;
+                //                         }else{ 
+                //                             copy_map = map;
+                //                             return;
+                //                         }
+                //                     }
+                //                     if(copy_map[y - 1]){
+                //                         if(copy_map[y - 1][i] != Map.ship){
+                //                             copy_map[y - 1][i] = Map.time_ship_border;
+                //                         }else{ 
+                //                             copy_map = map;
+                //                             return;
+                //                         }
+                                        
+                //                         if(copy_map[y - 1][fixed_x - 1] != Map.ship){
+                //                             copy_map[y - 1][fixed_x - 1] = Map.time_ship_border;
+                //                         }else{ 
+                //                             copy_map = map;
+                //                             return;
+                //                         }
+                //                         if(copy_map[y - 1][i + 1] != Map.ship){
+                //                             copy_map[y - 1][i + 1] = Map.time_ship_border;
+                //                         }else{ 
+                //                             copy_map = map;
+                //                             return;
+                //                         }
+                //                     }
+                //                     if(copy_map[y][i + 1] != Map.ship){
+                //                         copy_map[y][i + 1] = Map.time_ship_border;
+                //                     }else{ 
+                //                         copy_map = map;
+                //                         return;
+                //                     }
+                //                     if(copy_map[y][fixed_x - 1] != Map.ship){
+                //                         copy_map[y][fixed_x - 1] = Map.time_ship_border;
+                //                     }else{ 
+                //                             copy_map = map;
+                //                             return;
+                //                     }
+                //                 }
+                //             }
+                //             break;
+                //     }
+                // }
+                map = copy_map;
+                showMap();
             }, false);
         }
     }
@@ -228,6 +279,7 @@ function initShips(new_ = false){
         ships = JSON.parse(sessionStorage.getItem('ships'));
     }
 }
+var save = false;
 let selectedShip = null;
 let shipsWay = null;
 let map = [];
@@ -258,16 +310,49 @@ document.addEventListener('keydown', (event) => {
             showMap();
             break;
         case Keys.Enter:
-            saveTimeShip();
-            clearAllTrash();
-            showMap();
-            ships[selectedShip]--;
-            showShips();
-            selectedShip = null;
-            let goToGame = true;
-            for(let i = 1; i < 5; i++){
-                goToGame = (ships[i] == 0) && goToGame;
-            } 
+            if(save){
+                saveTimeShip();
+                clearAllTrash();
+                showMap();
+                ships[selectedShip]--;
+                showShips();
+                selectedShip = null;
+                let goToGame = true;
+                for(let i = 1; i < 5; i++){
+                    goToGame = (ships[i] == 0) && goToGame;
+                } 
+                if(goToGame){
+                    let link = document.getElementById('go_to_game');
+                    link.removeAttribute('hidden');
+                    sessionStorage.clear();
+                    link.addEventListener('click', function(){
+                        var id = document.getElementById('game_id').innerText;
+                        link_text = '/api/API_Game/' + id;
+                        var all_data = {}
+                        all_data['id'] = Number(id);
+                        all_data['users'] = [];
+                        all_data['userTurn'] = {};
+                        all_data['maps'] = [];
+                        var maps = {};
+                        maps['Map_str'] = JSON.stringify(map);
+                        all_data['maps'][0] = maps;
+                        console.log(JSON.stringify(all_data));
+                        $.ajax({
+                            method: "PUT",
+                            url: link_text,
+                            beforeSend: function (xhr) { xhr.setRequestHeader("XSRF-TOKEN", $('input:hidden[name="__RequestVerificationToken"]').val()); },
+                            contentType: "application/json;charset=utf-8",
+                            data: JSON.stringify(all_data),
+                            success: function (message) {
+                                window.location.replace('/Game/Game?id=' + id);
+                            },
+                            error: function (message) {
+                                alert('vse sdochlo');
+                            }
+                        });
+                    });
+                }
+            }
             /**
              * {
                     "id": 0,
@@ -287,37 +372,6 @@ document.addEventListener('keydown', (event) => {
                     ]       
                 }
              */
-            if(!goToGame){
-                let link = document.getElementById('go_to_game');
-                link.removeAttribute('hidden');
-                sessionStorage.clear();
-                link.addEventListener('click', function(){
-                    var id = document.getElementById('game_id').innerText;
-                    link_text = '/api/API_Game/' + id;
-                    var all_data = {}
-                    all_data['id'] = Number(id);
-                    all_data['users'] = [];
-                    all_data['userTurn'] = {};
-                    all_data['maps'] = [];
-                    var maps = {};
-                    maps['Map_str'] = JSON.stringify(map);
-                    all_data['maps'][0] = maps;
-                    console.log(JSON.stringify(all_data));
-                    $.ajax({
-                        method: "PUT",
-                        url: link_text,
-                        beforeSend: function (xhr) { xhr.setRequestHeader("XSRF-TOKEN", $('input:hidden[name="__RequestVerificationToken"]').val()); },
-                        contentType: "application/json;charset=utf-8",
-                        data: JSON.stringify(all_data),
-                        success: function (message) {
-                            window.location.replace('/Game/Game?id=' + id);
-                        },
-                        error: function (message) {
-                            alert('vse sdochlo');
-                        }
-                    });
-                });
-            }
             break;       
     }
 });

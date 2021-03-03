@@ -97,97 +97,156 @@ function setListenersMap() {
         var copy_map = map;
 
         if (selectedShip != null && shipsWay != null) {
-          var _x = this.getAttribute("x");
+          var _x = Number(this.getAttribute("x"));
 
-          _x = Number(_x);
+          var _y = Number(this.getAttribute("y"));
 
-          var _y = this.getAttribute("y");
-
-          _y = Number(_y);
-          var change = false;
           selectedShip = Number(selectedShip);
+          var y_array = [-1, 1];
+          save = true; // showMap();
 
           switch (shipsWay) {
             case ShipWay.right:
-              if (copy_map[_y][_x + (selectedShip - 1)] != null) {
-                var fixed_x = _x;
+              var fixed_x = _x;
 
-                for (var _i = _x; _i < selectedShip + fixed_x; _i++) {
-                  if (copy_map[_y][_i] != Map.ship) {
+              for (var _i = _x; _i < fixed_x + selectedShip && save; ++_i) {
+                save = fixed_x + selectedShip - 1 < 10;
+
+                if (save) {
+                  save = copy_map[_y][_i] == Map.field && save;
+
+                  if (copy_map[_y][_i] == Map.field) {
                     copy_map[_y][_i] = Map.time_sheap;
                   } else {
-                    copy_map = map;
                     return;
                   }
+                } else {
+                  return;
+                }
+              }
 
-                  if (copy_map[_y + 1]) {
-                    if (copy_map[_y + 1][_i] != Map.ship) {
-                      copy_map[_y + 1][_i] = Map.time_ship_border;
+              for (var j = 0; j < 2; j++) {
+                for (var _i2 = _x - 1; _i2 < fixed_x + selectedShip + 1; ++_i2) {
+                  // save = copy_map[y + y_array[j]] != Map.ship && save;
+                  if (copy_map[_y + y_array[j]]) {
+                    save = copy_map[_y + y_array[j]][_i2] != Map.ship && save;
+
+                    if (copy_map[_y + y_array[j]][_i2] != Map.ship) {
+                      copy_map[_y + y_array[j]][_i2] = Map.time_ship_border;
                     } else {
-                      copy_map = map;
                       return;
                     }
-
-                    if (copy_map[_y + 1][fixed_x - 1] != Map.ship) {
-                      copy_map[_y + 1][fixed_x - 1] = Map.time_ship_border;
-                    } else {
-                      copy_map = map;
-                      return;
-                    }
-
-                    if (copy_map[_y + 1][_i + 1] != Map.ship) {
-                      copy_map[_y + 1][_i + 1] = Map.time_ship_border;
-                    } else {
-                      copy_map = map;
-                      return;
-                    }
-                  }
-
-                  if (copy_map[_y - 1]) {
-                    if (copy_map[_y - 1][_i] != Map.ship) {
-                      copy_map[_y - 1][_i] = Map.time_ship_border;
-                    } else {
-                      copy_map = map;
-                      return;
-                    }
-
-                    if (copy_map[_y - 1][fixed_x - 1] != Map.ship) {
-                      copy_map[_y - 1][fixed_x - 1] = Map.time_ship_border;
-                    } else {
-                      copy_map = map;
-                      return;
-                    }
-
-                    if (copy_map[_y - 1][_i + 1] != Map.ship) {
-                      copy_map[_y - 1][_i + 1] = Map.time_ship_border;
-                    } else {
-                      copy_map = map;
-                      return;
-                    }
-                  }
-
-                  if (copy_map[_y][_i + 1] != Map.ship) {
-                    copy_map[_y][_i + 1] = Map.time_ship_border;
-                  } else {
-                    copy_map = map;
-                    return;
-                  }
-
-                  if (copy_map[_y][fixed_x - 1] != Map.ship) {
-                    copy_map[_y][fixed_x - 1] = Map.time_ship_border;
-                  } else {
-                    copy_map = map;
-                    return;
                   }
                 }
               }
 
+              if (copy_map[_y]) {
+                save = copy_map[_y][_x + 1] != Map.ship && save;
+
+                if (copy_map[_y][_x + 1] != Map.ship) {
+                  copy_map[_y][_x + 1] = Map.time_ship_border;
+                } else {
+                  return;
+                }
+
+                save = copy_map[_y][_x - 1] != Map.ship && save;
+
+                if (copy_map[_y][_x - 1] != Map.ship) {
+                  copy_map[_y][_x - 1] = Map.time_ship_border;
+                } else {
+                  return;
+                }
+              }
+
+              break;
+
+            case (ShipWay.down, ShipWay.up):
               break;
           }
 
-          map = copy_map;
-          showMap();
-        }
+          if (save) {
+            map = copy_map;
+            showMap();
+          }
+        } // if((selectedShip != null)&& (shipsWay != null)){
+        //     let x = this.getAttribute("x");
+        //     x = Number(x);
+        //     let y = this.getAttribute("y");
+        //     y = Number(y);
+        //     let change = false;
+        //     selectedShip = Number(selectedShip);
+        //     switch(shipsWay){
+        //         case ShipWay.right:
+        //             if((copy_map[y][x + (selectedShip - 1)] != null)){
+        //                 let fixed_x =  x;
+        //                 for(let i = x; i < selectedShip + fixed_x; i++){
+        //                     if(copy_map[y][i]!= Map.ship){
+        //                         copy_map[y][i] = Map.time_sheap;
+        //                     }else{ 
+        //                         copy_map = map;
+        //                         return;
+        //                     }
+        //                     if(copy_map[y + 1]){
+        //                         if(copy_map[y + 1][i] != Map.ship){
+        //                             copy_map[y + 1][i] = Map.time_ship_border;
+        //                         }else{ 
+        //                             copy_map = map;
+        //                         return;
+        //                         }	
+        //                         if(copy_map[y  + 1][fixed_x - 1] != Map.ship){
+        //                             copy_map[y + 1][fixed_x - 1] = Map.time_ship_border;
+        //                         }else{ 
+        //                             copy_map = map;
+        //                         return;
+        //                         }
+        //                         if(copy_map[y + 1][i + 1] != Map.ship){
+        //                             copy_map[y + 1][i + 1] = Map.time_ship_border;
+        //                         }else{ 
+        //                             copy_map = map;
+        //                             return;
+        //                         }
+        //                     }
+        //                     if(copy_map[y - 1]){
+        //                         if(copy_map[y - 1][i] != Map.ship){
+        //                             copy_map[y - 1][i] = Map.time_ship_border;
+        //                         }else{ 
+        //                             copy_map = map;
+        //                             return;
+        //                         }
+        //                         if(copy_map[y - 1][fixed_x - 1] != Map.ship){
+        //                             copy_map[y - 1][fixed_x - 1] = Map.time_ship_border;
+        //                         }else{ 
+        //                             copy_map = map;
+        //                             return;
+        //                         }
+        //                         if(copy_map[y - 1][i + 1] != Map.ship){
+        //                             copy_map[y - 1][i + 1] = Map.time_ship_border;
+        //                         }else{ 
+        //                             copy_map = map;
+        //                             return;
+        //                         }
+        //                     }
+        //                     if(copy_map[y][i + 1] != Map.ship){
+        //                         copy_map[y][i + 1] = Map.time_ship_border;
+        //                     }else{ 
+        //                         copy_map = map;
+        //                         return;
+        //                     }
+        //                     if(copy_map[y][fixed_x - 1] != Map.ship){
+        //                         copy_map[y][fixed_x - 1] = Map.time_ship_border;
+        //                     }else{ 
+        //                             copy_map = map;
+        //                             return;
+        //                     }
+        //                 }
+        //             }
+        //             break;
+        //     }
+        // }
+
+
+        map = copy_map;
+        showMap();
       }, false);
     }
   }
@@ -281,6 +340,7 @@ function initShips() {
   }
 }
 
+var save = false;
 var selectedShip = null;
 var shipsWay = null;
 var map = [];
@@ -315,16 +375,52 @@ document.addEventListener('keydown', function (event) {
       break;
 
     case Keys.Enter:
-      saveTimeShip();
-      clearAllTrash();
-      showMap();
-      ships[selectedShip]--;
-      showShips();
-      selectedShip = null;
-      var goToGame = true;
+      if (save) {
+        saveTimeShip();
+        clearAllTrash();
+        showMap();
+        ships[selectedShip]--;
+        showShips();
+        selectedShip = null;
+        var goToGame = true;
 
-      for (var _i2 = 1; _i2 < 5; _i2++) {
-        goToGame = ships[_i2] == 0 && goToGame;
+        for (var _i3 = 1; _i3 < 5; _i3++) {
+          goToGame = ships[_i3] == 0 && goToGame;
+        }
+
+        if (goToGame) {
+          var link = document.getElementById('go_to_game');
+          link.removeAttribute('hidden');
+          sessionStorage.clear();
+          link.addEventListener('click', function () {
+            var id = document.getElementById('game_id').innerText;
+            link_text = '/api/API_Game/' + id;
+            var all_data = {};
+            all_data['id'] = Number(id);
+            all_data['users'] = [];
+            all_data['userTurn'] = {};
+            all_data['maps'] = [];
+            var maps = {};
+            maps['Map_str'] = JSON.stringify(map);
+            all_data['maps'][0] = maps;
+            console.log(JSON.stringify(all_data));
+            $.ajax({
+              method: "PUT",
+              url: link_text,
+              beforeSend: function beforeSend(xhr) {
+                xhr.setRequestHeader("XSRF-TOKEN", $('input:hidden[name="__RequestVerificationToken"]').val());
+              },
+              contentType: "application/json;charset=utf-8",
+              data: JSON.stringify(all_data),
+              success: function success(message) {
+                window.location.replace('/Game/Game?id=' + id);
+              },
+              error: function error(message) {
+                alert('vse sdochlo');
+              }
+            });
+          });
+        }
       }
       /**
        * {
@@ -346,40 +442,6 @@ document.addEventListener('keydown', function (event) {
           }
        */
 
-
-      if (!goToGame) {
-        var link = document.getElementById('go_to_game');
-        link.removeAttribute('hidden');
-        sessionStorage.clear();
-        link.addEventListener('click', function () {
-          var id = document.getElementById('game_id').innerText;
-          link_text = '/api/API_Game/' + id;
-          var all_data = {};
-          all_data['id'] = Number(id);
-          all_data['users'] = [];
-          all_data['userTurn'] = {};
-          all_data['maps'] = [];
-          var maps = {};
-          maps['Map_str'] = JSON.stringify(map);
-          all_data['maps'][0] = maps;
-          console.log(JSON.stringify(all_data));
-          $.ajax({
-            method: "PUT",
-            url: link_text,
-            beforeSend: function beforeSend(xhr) {
-              xhr.setRequestHeader("XSRF-TOKEN", $('input:hidden[name="__RequestVerificationToken"]').val());
-            },
-            contentType: "application/json;charset=utf-8",
-            data: JSON.stringify(all_data),
-            success: function success(message) {
-              window.location.replace('/Game/Game?id=' + id);
-            },
-            error: function error(message) {
-              alert('vse sdochlo');
-            }
-          });
-        });
-      }
 
       break;
   }
