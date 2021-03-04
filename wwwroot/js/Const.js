@@ -8,6 +8,6 @@ export const Map = {
 }
 export const GameStatus = {
     'alone' : 'alone',
-    'plaing' : 'plaing',
+    'plaing' : 'playing',
     'over' : 'over'
 }

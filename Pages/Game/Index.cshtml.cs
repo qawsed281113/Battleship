@@ -65,6 +65,7 @@ namespace Exam.Pages.Game
                 return NotFound();
             }
             Game2.Users.Add(user);
+            Game2.GameStatus = _context.GameStatuses.Find(1);
             await _context.SaveChangesAsync();
             return Redirect("/Game/CreateMap?id="+Game.Id);
         }
