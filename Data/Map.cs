@@ -11,6 +11,7 @@ namespace Exam.Data
         [Key]
         public int Id {get; set;}
         public string Map_str {get;set;}
+        public Game Game {get; set;}
         public User Owner {get;set;}
     }
 }

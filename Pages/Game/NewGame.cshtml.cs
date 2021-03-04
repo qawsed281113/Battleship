@@ -17,6 +17,8 @@ namespace MyApp.Namespace
         private readonly Exam.Data.ApplicationDbContext _context;
         private readonly SignInManager<Exam.Data.User> _signInManager;
         private readonly UserManager<Exam.Data.User> __userManager;
+        [BindProperty]
+        public  Exam.Data.User Player {get; set;}
 
         public NewGameModel(Exam.Data.ApplicationDbContext context, SignInManager<Exam.Data.User> signInManager, UserManager<Exam.Data.User> userManager)
         {
@@ -28,7 +30,9 @@ namespace MyApp.Namespace
         public Exam.Data.Game Game {get; set;}
         public async Task<IActionResult> OnGetAsync()
         {
-            
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var user_find  = _context.Users.Include(u => u.Game).Where(u => u.Id == userId);
+            Player = user_find.FirstOrDefault();
             return Page();
         }
     }

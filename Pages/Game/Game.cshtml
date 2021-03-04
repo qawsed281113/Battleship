@@ -6,19 +6,18 @@
 <div class="main_field">
 
     <div class="half" id="player">
-        <h1>You</h1>
+        <h1 id="player_one_name">You</h1>
         <div class="field_game">
-            <table class="play_field" id="player_field">
+            <table class="play_field" id="player_one">
                 
             </table>
         </div>
             
     </div>
     <div class="half" id="enemy">
-        <h1>Enemy</h1>
+        <h1 id="player_two_name">Enemy</h1>
         <div class="field_game">
-            <table class="play_field" id="enemy_field">
-        
+            <table class="play_field" id="player_two">
             </table>
         </div>
     </div>
@@ -27,5 +26,5 @@
 
 </div>
 <div id="player_id" hidden>@Model.Player.Id</div>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script src="/js/game.js"></script>
+<script type="module" src="/js/game.js"></script>
+<script src="/lib/jquery/dist/jquery.min.js"></script>

@@ -26,7 +26,13 @@ namespace Exam.API
         [HttpGet("{id}")]
         public async Task<ActionResult<Exam.Data.Game>> GetGame(int id)
         {
-            var game = await _context.Games.Include(m => m.Maps).Where(u => u.Id == id).FirstAsync();
+            var game = await _context.Games.Where(g => g.Id == id).Select(g => new Game {
+                Id = g.Id, 
+                Maps = g.Maps.ToList(),
+                Users = g.Users,
+                GameStatus = g.GameStatus,
+                UserTurnId = g.UserTurnId
+            }).FirstOrDefaultAsync();
             if (game == null)
             {
                 return NotFound();
@@ -42,6 +48,12 @@ namespace Exam.API
                 return BadRequest();
             }
             _context.Entry(game).State = EntityState.Modified;
+            
+            for(int i = 0; i < game.Maps.Count; ++i){
+                game.Maps[i].Owner = _context.Users.Find(game.Maps[i].Owner.Id);
+                game.Maps[i].Game = game;
+            }
+            await _context.Maps.AddRangeAsync(game.Maps);
             try
             {
                 await _context.SaveChangesAsync();

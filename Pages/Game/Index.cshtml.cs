@@ -64,6 +64,8 @@ namespace Exam.Pages.Game
             {
                 return NotFound();
             }
+            Game2.Users.Add(user);
+            await _context.SaveChangesAsync();
             return Redirect("/Game/CreateMap?id="+Game.Id);
         }
         private  async void disableGame()
