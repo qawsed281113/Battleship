@@ -88,7 +88,6 @@ function getTurn(){
     getGameId();
     getGame();
     game = JSON.parse(sessionStorage.getItem("game"));
-    console.log(game);
     if(game != null){
         playerTurn = game["userTurnId"];
     }
@@ -110,4 +109,3 @@ var playerTurn = '';
 getGameId();
 getGame();
 game = JSON.parse(sessionStorage.getItem("game"));
-console.log(game);

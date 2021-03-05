@@ -15,17 +15,13 @@ export class Game {
     }
     startGame(){
         if(this.gameStatus == Const.GameStatus.over){
-            let element = document.body;
-            while(element.lastElementChild) {
-                element.removeChild(element.lastElementChild)
-            }
             let text;
             if(this.currentPlayerId == this.winnerId){
                 text = "Congrats you had won";
             } else {
                 text = "We are sorry but you loses";
             }
-            element.innerText = text;
+            alert(text);
         } else if(this.gameStatus != Const.GameStatus.plaing){
             this.getGameId();
             this.getGame();
@@ -50,7 +46,6 @@ export class Game {
     }
     GameInit(game_return){
         this.players = [];
-        console.log(game_return);
         this.id = game_return.id;
         this.winnerId = game_return.winnerId;
         this.userTurnId = game_return.userTurnId;
@@ -163,7 +158,6 @@ export class Game {
         maps_["Owner"] = {};
         maps_["Owner"]["Id"] = this.players['player'].id;
         all_data['maps'][1] = maps_;
-        console.log(JSON.stringify(all_data));
         $.ajax({
             method: "PUT",
             url: '/api/API_Game/' + this.gameId,

@@ -292,7 +292,6 @@ document.addEventListener('keydown', (event) => {
                         maps["Owner"] = {};
                         maps["Owner"]["Id"] = document.getElementById("player_id").innerText;
                         all_data['maps'][0] = maps;
-                        console.log(JSON.stringify(all_data));
                         $.ajax({
                             method: "PUT",
                             url: link_text,
