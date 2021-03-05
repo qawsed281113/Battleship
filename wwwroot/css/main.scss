@@ -9,6 +9,9 @@
     .field_game{
         padding-left: 8%;
     }
+    .step_text{
+        color: #1687a7;
+    }
     .ship_line{
         margin: 20px;
     }
@@ -48,7 +51,7 @@
         }
     }
     .play_field {
-        background : #276678;
+        background : #275878;
         box-shadow: 0 0 70px #bcd5e9; 
         
         .field{
@@ -66,9 +69,6 @@
             width: 50px;
             height: 50px;
             background-color: #1687a7 !important;
-            &:hover{
-                background-color: #214151 !important;
-            }
         }
         .crached{
             width: 50px;
@@ -82,7 +82,7 @@
             background-color:#eff7e1;
         }
     }
-    #enemy_field {
+    #player_two {
         background : #276678;
         box-shadow: 0 0 70px #bcd5e9; 
         .field{
@@ -91,8 +91,7 @@
             background-color: #d3e0ea;
             &:hover {
                 background-color: #16c79a!important;
-                box-shadow: 0 0 30px #f1ffda; 
-                
+                box-shadow: 0 0 30px #f1ffda;   
             }
         }
         .no_shoot_field{

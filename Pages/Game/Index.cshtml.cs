@@ -32,7 +32,10 @@ namespace Exam.Pages.Game
         public async Task<IActionResult> OnGetAsync()
         {
             var alone = await _context.GameStatuses.FindAsync(3);
-            Games = await _context.Games.Where(u => u.GameStatus == alone).ToListAsync();
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var user_find  = _context.Users.Include(u => u.Game).Where(u => u.Id == userId);
+            var user = user_find.FirstOrDefault();
+            Games = await _context.Games.Where(u => u.GameStatus == alone).Where(u => u.Users.Count > 0).Where(u => u.UserTurnId != userId).ToListAsync();
             return Page();
         }
         public async Task<IActionResult> OnPostAsync()
@@ -62,7 +65,7 @@ namespace Exam.Pages.Game
             var user2 = Game2.Users.FirstOrDefault();
             if(user.Id == user2.Id)
             {
-                return NotFound();
+                return Redirect("/Game/CreateMap?id="+Game.Id);
             }
             Game2.Users.Add(user);
             Game2.GameStatus = _context.GameStatuses.Find(1);

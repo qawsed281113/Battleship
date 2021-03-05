@@ -53,7 +53,6 @@ function showMap(){
         }
     }
     setListenersMap();
-    sessionStorage.setItem('map',JSON.stringify(map));
 }
 function clearAllTrash(){
     for(let y = 0; y < 10; y++){
@@ -88,7 +87,6 @@ function setListenersMap(){
                          -1, 1
                     ];
                     save = true;
-                    // showMap();
                     switch(shipsWay){
                         case ShipWay.right:
                             let fixed_x  =  x;
@@ -137,7 +135,7 @@ function setListenersMap(){
                                 for(let j = 0; j < 2; j++){
                                     for(let i = y - 1; i < fixed_y + selectedShip + 1;++i){
                                         // save = copy_map[y + y_array[j]] != Map.ship && save;
-                                        if(copy_map[y][x + y_array[j]]){
+                                        if(copy_map[i] && copy_map[i][x + y_array[j]]){
                                             save = copy_map[i][x + y_array[j]] != Map.ship && save;
                                             if(copy_map[i][x + y_array[j]] != Map.ship){
                                                 copy_map[i][x + y_array[j]] = Map.time_ship_border;
@@ -146,14 +144,18 @@ function setListenersMap(){
                                     }
                                 }
                                 if(copy_map[y]){
-                                    save = copy_map[y + selectedShip][x] != Map.ship && save;
-                                    if(copy_map[y + selectedShip][x] != Map.ship){
-                                        copy_map[y + selectedShip][x] = Map.time_ship_border;
-                                    }else{return}
-                                    save = copy_map[y - 1][x] != Map.ship && save;
-                                    if(copy_map[y - 1][x] != Map.ship){
-                                        copy_map[y - 1][x] = Map.time_ship_border;
-                                    }else{return}
+                                        if(copy_map[y + selectedShip]){
+                                        save = copy_map[y + selectedShip][x] != Map.ship && save;
+                                        if(copy_map[y + selectedShip][x] != Map.ship){
+                                            copy_map[y + selectedShip][x] = Map.time_ship_border;
+                                        }else{return}
+                                    }
+                                    if(copy_map[y - 1]){
+                                        save = copy_map[y - 1][x] != Map.ship && save;
+                                        if(copy_map[y - 1][x] != Map.ship){
+                                            copy_map[y - 1][x] = Map.time_ship_border;
+                                        }else{return}
+                                    }
                                 }
                     }
                     if(save){
@@ -168,7 +170,6 @@ function setListenersMap(){
     }
 }
 function initMap(new_ = false){
-    if((new_)||(sessionStorage.getItem('map') == null)){
         map = {};
         for(let y = 0; y < 10;y++){
             map[y] = {};
@@ -176,10 +177,6 @@ function initMap(new_ = false){
                 map[y][x]  = Map.field;
             }
         }
-        sessionStorage.setItem('map', JSON.stringify(map));
-    } else{
-        map = JSON.parse(sessionStorage.getItem('map'));
-    }
 }
 function showShips(){
     let element = document.getElementById('ships_field');
@@ -209,7 +206,6 @@ function showShips(){
         place.appendChild(ship);
     }
     setListenersShips();
-    sessionStorage.setItem('ships', JSON.stringify(ships));
 }
 function setListenersShips(){
     ship = document.getElementsByClassName('ship_get');
@@ -226,15 +222,10 @@ function setListenersShips(){
     }
 }
 function initShips(new_ = false){
-    if((new_) ||(sessionStorage.getItem('ships') == null)){
         ships[4] = 1;
         ships[3] = 2;
         ships[2] = 3;
         ships[1] = 4;
-        sessionStorage.setItem('ships', JSON.stringify(ships));
-    } else {
-        ships = JSON.parse(sessionStorage.getItem('ships'));
-    }
 }
 var save = false;
 let selectedShip = null;
@@ -279,17 +270,15 @@ document.addEventListener('keydown', (event) => {
                 clearAllTrash();
                 showMap();
                 ships[selectedShip]--;
-                sessionStorage.setItem("ships", JSON.stringify(ships));
                 showShips();
                 selectedShip = null;
                 let goToGame = true;
                 for(let i = 1; i < 5; i++){
                     goToGame = (ships[i] == 0) && goToGame;
                 } 
-                if(!goToGame){
+                if(goToGame){
                     let link = document.getElementById('go_to_game');
                     link.removeAttribute('hidden');
-                    sessionStorage.clear();
                     link.addEventListener('click', function(){
                         var id = document.getElementById('game_id').innerText;
                         link_text = '/api/API_Game/' + id;

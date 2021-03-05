@@ -10,6 +10,9 @@
 .half .field_game {
   padding-left: 8%;
 }
+.half .step_text {
+  color: #1687a7;
+}
 .half .ship_line {
   margin: 20px;
 }
@@ -44,7 +47,7 @@
   background-color: #1687a7;
 }
 .half .play_field {
-  background: #276678;
+  background: #275878;
   box-shadow: 0 0 70px #bcd5e9;
 }
 .half .play_field .field {
@@ -62,9 +65,6 @@
   height: 50px;
   background-color: #1687a7 !important;
 }
-.half .play_field .ship:hover {
-  background-color: #214151 !important;
-}
 .half .play_field .crached {
   width: 50px;
   height: 50px;
@@ -75,29 +75,29 @@
   height: 50px;
   background-color: #eff7e1;
 }
-.half #enemy_field {
+.half #player_two {
   background: #276678;
   box-shadow: 0 0 70px #bcd5e9;
 }
-.half #enemy_field .field {
+.half #player_two .field {
   width: 50px;
   height: 50px;
   background-color: #d3e0ea;
 }
-.half #enemy_field .field:hover {
+.half #player_two .field:hover {
   background-color: #16c79a !important;
   box-shadow: 0 0 30px #f1ffda;
 }
-.half #enemy_field .no_shoot_field {
+.half #player_two .no_shoot_field {
   width: 50px;
   height: 50px;
   background-color: #d3e0ea;
 }
-.half #enemy_field .crashed {
+.half #player_two .crashed {
   width: 50px;
   height: 50px;
 }
-.half #enemy_field .miss {
+.half #player_two .miss {
   width: 50px;
   height: 50px;
   background-color: #ffefa1;

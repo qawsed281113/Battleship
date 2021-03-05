@@ -10,7 +10,14 @@ export class Game {
     constructor (){
         this.getCurrentPlayerId();
         var that = this;
+        window.onbeforeunload = function(evt) {
+            that.onClosing();
+        };
         setInterval(function(){that.startGame()},1500);
+    }
+    onClosing(){
+        this.GameStatus = Const.GameStatus.over;
+        this.setGame();
     }
     startGame(){
         if(this.gameStatus != Const.GameStatus.plaing){
@@ -83,9 +90,6 @@ export class Game {
                 that.gameStatus = game_return.gameStatus['name'];
                 that.GameInit(game_return);
             },
-            error: function (){
-                alert("vse sdochlo");
-            }
         });
     }
     getGameId(){
@@ -109,6 +113,7 @@ export class Game {
                         let y = Number(this.getAttribute("y"));
                         if((map[y][x] == Const.Map.field)){
                             map[y][x] = Const.Map.miss;
+                            that.userTurnId = that.players['enemy'].id;
                         } else if(map[y][x] == Const.Map.ship){
                             map[y][x] = Const.Map.crush;
                         } else {return;}
@@ -126,7 +131,7 @@ export class Game {
         all_data['id'] = Number(this.gameId);
         all_data['users'] = [];
         let userTurnId;
-        all_data['userTurnId'] = this.players['enemy'].id;
+        all_data['userTurnId'] = this.userTurnId
         all_data['maps'] = [];
         var maps_ = {};
         maps_['Map_str'] = JSON.stringify(this.players['enemy'].map);
@@ -147,18 +152,15 @@ export class Game {
             data: JSON.stringify(all_data),
             success: function (message) {
             },
-            error: function (message) {
-                alert('vse sdochlo');
-            }
         });
     }
-    getUserTurn(){
-
-    }
     showNames(){
-        this.players['player'].showName();
-        this.players['enemy'].showName();
+        if(this.players['player'].id == this.userTurnId){
+            this.players['player'].showName(true);
+            this.players['enemy'].showName(false);
+        } else{
+            this.players['player'].showName(false);
+            this.players['enemy'].showName(true);
+        }
     }
-
-
 }

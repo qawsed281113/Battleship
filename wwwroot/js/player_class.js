@@ -42,8 +42,13 @@ export class Player{
             }
         }
     }
-    showName(){
+    showName(fire){
         let nameEl = document.getElementById(this.htmlUserNameId);
         nameEl.innerText = this.name;
+        if(fire){
+            nameEl.setAttribute('class', 'step_text');
+        } else{
+            nameEl.className = '';
+        }
     }
 }
