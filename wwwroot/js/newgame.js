@@ -276,7 +276,7 @@ document.addEventListener('keydown', (event) => {
                 for(let i = 1; i < 5; i++){
                     goToGame = (ships[i] == 0) && goToGame;
                 } 
-                if(goToGame){
+                if(!goToGame){
                     let link = document.getElementById('go_to_game');
                     link.removeAttribute('hidden');
                     link.addEventListener('click', function(){

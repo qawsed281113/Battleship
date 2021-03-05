@@ -13,6 +13,7 @@ namespace Exam.Data
         public int Id {get; set;}
         public List<User> Users {get; set;}
         public string UserTurnId{get; set;}
+        public string? WinnerId {get; set;}
         public List<Map> Maps { get; set; }
         public GameStatus GameStatus{get;set;}
 

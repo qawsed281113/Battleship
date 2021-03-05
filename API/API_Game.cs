@@ -31,7 +31,8 @@ namespace Exam.API
                 Maps = g.Maps.ToList(),
                 Users = g.Users,
                 GameStatus = g.GameStatus,
-                UserTurnId = g.UserTurnId
+                UserTurnId = g.UserTurnId,
+                WinnerId = g.WinnerId
             }).FirstOrDefaultAsync();
             if (game == null)
             {
@@ -48,7 +49,10 @@ namespace Exam.API
                 return BadRequest();
             }
             _context.Entry(game).State = EntityState.Modified;
-            
+            if(game.GameStatus != null)
+            {
+                game.GameStatus = _context.GameStatuses.Where(u => u.Name == game.GameStatus.Name).FirstOrDefault();
+            }
             for(int i = 0; i < game.Maps.Count; ++i){
                 game.Maps[i].Owner = _context.Users.Find(game.Maps[i].Owner.Id);
                 game.Maps[i].Game = game;

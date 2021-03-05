@@ -5,22 +5,28 @@ export class Game {
     gameStatus;
     userTurnId;
     maps;
+    winnerId;
     players;
     currentPlayerId;
     constructor (){
         this.getCurrentPlayerId();
         var that = this;
-        window.onbeforeunload = function(evt) {
-            that.onClosing();
-        };
         setInterval(function(){that.startGame()},1500);
     }
-    onClosing(){
-        this.GameStatus = Const.GameStatus.over;
-        this.setGame();
-    }
     startGame(){
-        if(this.gameStatus != Const.GameStatus.plaing){
+        if(this.gameStatus == Const.GameStatus.over){
+            let element = document.body;
+            while(element.lastElementChild) {
+                element.removeChild(element.lastElementChild)
+            }
+            let text;
+            if(this.currentPlayerId == this.winnerId){
+                text = "Congrats you had won";
+            } else {
+                text = "We are sorry but you loses";
+            }
+            element.innerText = text;
+        } else if(this.gameStatus != Const.GameStatus.plaing){
             this.getGameId();
             this.getGame();
         } else {
@@ -46,6 +52,7 @@ export class Game {
         this.players = [];
         console.log(game_return);
         this.id = game_return.id;
+        this.winnerId = game_return.winnerId;
         this.userTurnId = game_return.userTurnId;
         for(let i = 0; i < game_return.users.length; i++){    
             let user = game_return.users[i];
@@ -105,8 +112,7 @@ export class Game {
             for(let x = 0; x < 10; x++){
                 // this.players[0].map[y][x]
                 let cell = document.getElementById(id_beg + x + '-' + y);
-                if(cell != null){
-                    
+                if(cell != null){  
                     cell.addEventListener('click', function(){
                         let map = that.players['enemy'].map;
                         let x = Number(this.getAttribute("x"));
@@ -115,7 +121,18 @@ export class Game {
                             map[y][x] = Const.Map.miss;
                             that.userTurnId = that.players['enemy'].id;
                         } else if(map[y][x] == Const.Map.ship){
-                            map[y][x] = Const.Map.crush;
+                                map[y][x] = Const.Map.crash;
+                                let win = true;
+                                for(let i = 0; i < 10; i++){
+                                    for(let j = 0; j < 10; j++){
+                                        win = map[i][j] != Const.Map.ship && win;
+                                    }
+                                }
+                                if(win){
+                                    that.gameStatus = Const.GameStatus.over;
+                                    that.winnerId = that.currentPlayerId;
+                                    that.setGame();
+                                }
                         } else {return;}
                         that.players['enemy'].map = map;
                         that.players['enemy'].showMap();
@@ -130,6 +147,9 @@ export class Game {
         var all_data = {}
         all_data['id'] = Number(this.gameId);
         all_data['users'] = [];
+        all_data['winnerId'] = this.winnerId;
+        all_data['gameStatus'] = {};
+        all_data['gameStatus']['name'] = this.gameStatus;
         let userTurnId;
         all_data['userTurnId'] = this.userTurnId
         all_data['maps'] = [];

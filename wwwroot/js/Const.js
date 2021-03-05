@@ -5,6 +5,7 @@ export const Map = {
     'miss' : "miss",
     'ship_hover' : 'ship_hover',
     'fire' : 'fire',
+    'kill' : 'kill',
 }
 export const GameStatus = {
     'alone' : 'alone',
