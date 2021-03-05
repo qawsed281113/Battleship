@@ -11,7 +11,7 @@ export class Game {
     constructor (){
         this.getCurrentPlayerId();
         var that = this;
-        setInterval(function(){that.startGame()},1500);
+        var david = setInterval(function(david){that.startGame()},1500);
     }
     startGame(){
         if(this.gameStatus == Const.GameStatus.over){
@@ -22,6 +22,8 @@ export class Game {
                 text = "We are sorry but you loses";
             }
             alert(text);
+            for (var i = 1; i < 99999; i++)
+            window.clearInterval(i);
         } else if(this.gameStatus != Const.GameStatus.plaing){
             this.getGameId();
             this.getGame();
