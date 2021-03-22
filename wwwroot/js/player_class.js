@@ -13,7 +13,6 @@ export class Player{
         this.htmlMapId = htmlMapId_;
         this.htmlUserNameId = htmlUserNameId_;
         this.me = me_;
-        // this.showMap();
     }
     showMap(){
         let element = document.getElementById(this.htmlMapId);

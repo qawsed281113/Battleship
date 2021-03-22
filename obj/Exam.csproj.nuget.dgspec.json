@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "/home/david/Projects/Sync/DotNet/Exam/Exam.csproj": {}
+    "C:\\Users\\qawsed\\Bobych\\Renju\\Exam.csproj": {}
   },
   "projects": {
-    "/home/david/Projects/Sync/DotNet/Exam/Exam.csproj": {
+    "C:\\Users\\qawsed\\Bobych\\Renju\\Exam.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/david/Projects/Sync/DotNet/Exam/Exam.csproj",
+        "projectUniqueName": "C:\\Users\\qawsed\\Bobych\\Renju\\Exam.csproj",
         "projectName": "Exam",
-        "projectPath": "/home/david/Projects/Sync/DotNet/Exam/Exam.csproj",
-        "packagesPath": "/home/david/.nuget/packages/",
-        "outputPath": "/home/david/Projects/Sync/DotNet/Exam/obj/",
+        "projectPath": "C:\\Users\\qawsed\\Bobych\\Renju\\Exam.csproj",
+        "packagesPath": "C:\\Users\\qawsed\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\qawsed\\Bobych\\Renju\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "/home/david/.nuget/NuGet/NuGet.Config"
+          "C:\\Users\\qawsed\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net5.0"
@@ -97,7 +97,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/5.0.103/RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.100\\RuntimeIdentifierGraph.json"
         }
       }
     }

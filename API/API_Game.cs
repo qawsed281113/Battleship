@@ -28,7 +28,7 @@ namespace Exam.API
         {
             var game = await _context.Games.Where(g => g.Id == id).Select(g => new Game {
                 Id = g.Id, 
-                Maps = g.Maps.ToList(),
+                Map = g.Map,
                 Users = g.Users,
                 GameStatus = g.GameStatus,
                 UserTurnId = g.UserTurnId,
@@ -49,15 +49,6 @@ namespace Exam.API
                 return BadRequest();
             }
             _context.Entry(game).State = EntityState.Modified;
-            if(game.GameStatus != null)
-            {
-                game.GameStatus = _context.GameStatuses.Where(u => u.Name == game.GameStatus.Name).FirstOrDefault();
-            }
-            for(int i = 0; i < game.Maps.Count; ++i){
-                game.Maps[i].Owner = _context.Users.Find(game.Maps[i].Owner.Id);
-                game.Maps[i].Game = game;
-            }
-            await _context.Maps.AddRangeAsync(game.Maps);
             try
             {
                 await _context.SaveChangesAsync();
@@ -84,7 +75,6 @@ namespace Exam.API
             }
             _context.Games.Add(game);
             await _context.SaveChangesAsync();
-
             return CreatedAtAction("GetGame", new {id = game.Id}, game);
         }
         [HttpDelete("{id}")]

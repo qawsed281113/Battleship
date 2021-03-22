@@ -54,7 +54,7 @@ namespace Exam.Pages.Game
             Game = game;
             _context.Games.Add(game);
             _context.SaveChanges();
-            return Redirect("/Game/CreateMap?id=" + Game.Id);
+            return Redirect("/Game/Game?id=" + Game.Id);
         }
         public async Task<IActionResult> OnPostVisit()
         {
@@ -65,12 +65,12 @@ namespace Exam.Pages.Game
             var user2 = Game2.Users.FirstOrDefault();
             if(user.Id == user2.Id)
             {
-                return Redirect("/Game/CreateMap?id="+Game.Id);
+                return Redirect("/Game/Game?id="+Game.Id);
             }
             Game2.Users.Add(user);
             Game2.GameStatus = _context.GameStatuses.Find(1);
             await _context.SaveChangesAsync();
-            return Redirect("/Game/CreateMap?id="+Game.Id);
+            return Redirect("/Game/Game?id="+Game.Id);
         }
         private  async void disableGame()
         {

@@ -4,7 +4,7 @@ export class Game {
     gameid;
     gameStatus;
     userTurnId;
-    maps;
+    map;
     winnerId;
     players;
     currentPlayerId;
@@ -51,8 +51,10 @@ export class Game {
         this.id = game_return.id;
         this.winnerId = game_return.winnerId;
         this.userTurnId = game_return.userTurnId;
+        //set maps for player and enemy
         for(let i = 0; i < game_return.users.length; i++){    
             let user = game_return.users[i];
+            // if it is a player
             if(user['id'] ==  this.currentPlayerId){
                 let maps_ = game_return.maps;
                 let map = null;
@@ -63,6 +65,7 @@ export class Game {
                 }
                 this.players['player'] = new Player(user['id'], user['userName'], map, 'player_one','player_one_name', user['id'] ==  this.currentPlayerId);
             } else {
+                //if it is enemy
                 let maps_ = game_return.maps;
                 let map = null;
                 for(let i = 0; i < maps_.length; i++){
@@ -73,6 +76,7 @@ export class Game {
                 this.players['enemy'] = new Player(user['id'], user['userName'], map, 'player_two','player_two_name', user['id'] ==  this.currentPlayerId);
             }
         }
+        //if game is end ir not 
         if(this.gameStatus != Const.GameStatus.plaing){}else{
             this.players['player'].showMap();
             this.players['enemy'].showMap();
@@ -94,6 +98,47 @@ export class Game {
                 that.gameStatus = game_return.gameStatus['name'];
                 that.GameInit(game_return);
             },
+            error: function(){
+            }
+        });
+    }
+    generateMaps(){
+        if(this.maps == null){
+            this.maps = []; 
+        }
+        let map = [];
+
+    }
+    setGamer(){
+        let link  = 'api/API_Game/' + that.gameId;
+        var all_data = {};
+        all_data['id'] = that.id;
+        all_data['users'] = [];
+        all_data['userTurnId'] = that.userTurnId;
+        all_data['maps'] = [];
+        var maps = {};
+        maps['Map_str'] = JSON.stringify(that.maps);
+        maps['Owner'] = {};
+        let playerId;
+        if(that.players[0].id == currentPlayerId){
+            playerId= this.players[0].id;
+        }else{
+            playerId = this.players[0].id;
+        }
+        maps['Owner']['Id'] = playerId;
+        all_data['maps'][0] = maps;
+        $.ajax({
+            mathod : 'PUT',
+            url : link,
+            beforeSend: function (xhr) { xhr.setRequestHeader("XSRF-TOKEN", $('input:hidden[name="__RequestVerificationToken"]').val()); },
+            contentType : "application/json;charset=utf-8",
+            data : JSON.stringify(all_data),
+            success : function (message) {
+
+            },
+            error : function (massage) {
+                alert('tada');
+            }
         });
     }
     getGameId(){
@@ -107,7 +152,6 @@ export class Game {
         var id_beg = 'cell' + this.players['enemy'].htmlMapId+'-';
         for(let y = 0; y < 10; y++){
             for(let x = 0; x < 10; x++){
-                // this.players[0].map[y][x]
                 let cell = document.getElementById(id_beg + x + '-' + y);
                 if(cell != null){  
                     cell.addEventListener('click', function(){

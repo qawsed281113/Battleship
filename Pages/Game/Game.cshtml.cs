@@ -32,6 +32,7 @@ namespace Exam.Pages.Game
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var user_find  = _context.Users.Include(u => u.Game).Where(u => u.Id == userId);
+            _context.Entry(game).State = EntityState.Modified;
             Player = user_find.FirstOrDefault();
             var p =  _context.Games.Include(i => i.Users).Where(i => i.Id == id);
             Game = await p.FirstOrDefaultAsync();
